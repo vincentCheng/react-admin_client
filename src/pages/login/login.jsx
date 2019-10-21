@@ -16,17 +16,37 @@ class Login extends Component {
         // 阻止事件的默认行为
         event.preventDefault()
 
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
+        this.props.form.validateFields(async (err, values) => {
+            if (!err) { // 验证通过
                 // console.log('Received values of form: ', values);
                 let {username, password} = values
-                reqLogin(username, password)
-                    .then(response => {
-                        console.log('成功了', response);
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
+                /**
+                 * 这是ajax的方法
+                 */
+                // reqLogin(username, password)
+                //     .then(response => {
+                //         console.log('成功了', response);
+                //     })
+                //     .catch(err => {
+                //         console.log(err);
+                //     })
+
+                /**
+                 * 这是async/await方法
+                 *
+                 * async，写在await修饰的函数所在函数的左侧。
+                 * 也就是当前箭头函数的左侧。
+                 *
+                 * 试验：
+                 * 1、将api/index.js中的“login”改为“login2”，就会出现404错误。但是仍然打印“请求成功了”
+                 * 2、故意输错密码，出现“请求出错了”提示。
+                 */
+                try {
+                    let respose = await reqLogin(username, password)
+                    console.log('请求成功了', respose);
+                }catch (e) {
+                    console.log('请求出错了', e);
+                }
             }
         });
 
@@ -147,3 +167,9 @@ const WrapLogin = Form.create()(Login)
 
 export default WrapLogin;
 // export default Login;
+
+/**
+ * async 和 await
+ * 1、作用：
+ *
+ */
