@@ -4,10 +4,10 @@
 * 函数的返回值是promise对象
 * */
 
-import {BaseUrl, ReqType} from "config";
+import {BaseUrl, ReqType} from "./config";
 import axios from "axios";
 
-export default function ajax(url, data = {}, type = ReqType.GET) {
+export function ajax(url, data = {}, type = ReqType.GET) {
     url = BaseUrl + url
 
     if (ReqType.GET === type) {

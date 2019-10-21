@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import "./login.less";
 import logo from "./images/logo.png"; // jsx中，需要这样引入图片。
 import {Form, Icon, Input, Button} from 'antd';
+import {reqLogin} from "../../api";
 
 /**
  * 登陆的路由组件，一级路由。
@@ -17,7 +18,15 @@ class Login extends Component {
 
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                // console.log('Received values of form: ', values);
+                let {username, password} = values
+                reqLogin(username, password)
+                    .then(response => {
+                        console.log('成功了', response);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             }
         });
 
@@ -31,11 +40,11 @@ class Login extends Component {
      * 验证密码
      */
     validatePwd = (rule, value, callback) => {
-        if (!value)callback("请输入密码")
+        if (!value) callback("请输入密码")
         else {
             let length = value.length
-            if (4>length)callback("密码不能小于4位")
-            else if (length>12)callback("密码不能超过12位")
+            if (4 > length) callback("密码不能小于4位")
+            else if (length > 12) callback("密码不能超过12位")
             else callback()
         }
         // callback() // 没有传参表示验证通过
@@ -70,7 +79,7 @@ class Login extends Component {
                                 * 匹配规则里面没有空格，如果有就会报错。
                                 * */
                                 getFieldDecorator('username', {
-                                    initialValue:'admin',
+                                    initialValue: 'admin',
                                     rules: [
                                         {required: true, message: '请输入用户名!'},
                                         {max: 12, message: '用户名必须最多12位!'},
@@ -86,7 +95,7 @@ class Login extends Component {
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator('password', {
-                                initialValue:'admin',
+                                initialValue: 'admin',
                                 rules: [
                                     {validator: this.validatePwd}
                                 ]
