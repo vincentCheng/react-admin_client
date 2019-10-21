@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import "./login.less";
 import logo from "./images/logo.png"; // jsx中，需要这样引入图片。
-import {Form, Icon, Input, Button} from 'antd';
+import {Form, Icon, Input, Button, message} from 'antd';
 import {reqLogin} from "../../api";
+import {withRouter} from "react-router-dom";
+
 
 /**
  * 登陆的路由组件，一级路由。
  */
 class Login extends Component {
-
     /**
      *
      */
@@ -40,8 +41,23 @@ class Login extends Component {
                  * 试验：
                  * 1、将api/index.js中的“login”改为“login2”，就会出现404错误。但是仍然打印“请求成功了”
                  * 2、故意输错密码，出现“请求出错了”提示。
+                 *
+                 * 请求成功了，并不等于登陆成功。
                  */
-                await reqLogin(username, password)
+                let response = await reqLogin(username, password)
+                let status = response.status
+                // console.log(response);
+                if (1 === status) message.error(response.msg)
+                else if (200 === status) {
+                    message.success('登录成功 ')
+                    /**
+                     * 所有的组件都有history
+                     * 跳转到管理界面，不需要回退到登录界面。
+                     * 回退用push（这里不用），现在是在栈中的最后一个变为主界面，就是'replace'
+                     * */
+                    this.props.history.replace('/')
+                }
+
                 // try {
                 //     let respose = await reqLogin(username, password)
                 //     console.log('请求成功了', respose);
@@ -164,7 +180,7 @@ class Login extends Component {
  *
  * @type {ConnectedComponentClass<Login, Omit<FormComponentProps<any>, keyof WrappedFormInternalProps>>}
  */
-const WrapLogin = Form.create()(Login)
+const WrapLogin = Form.create({name: 'login'})(withRouter(Login))
 
 export default WrapLogin;
 // export default Login;
