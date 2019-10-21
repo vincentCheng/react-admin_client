@@ -41,12 +41,13 @@ class Login extends Component {
                  * 1、将api/index.js中的“login”改为“login2”，就会出现404错误。但是仍然打印“请求成功了”
                  * 2、故意输错密码，出现“请求出错了”提示。
                  */
-                try {
-                    let respose = await reqLogin(username, password)
-                    console.log('请求成功了', respose);
-                }catch (e) {
-                    console.log('请求出错了', e);
-                }
+                await reqLogin(username, password)
+                // try {
+                //     let respose = await reqLogin(username, password)
+                //     console.log('请求成功了', respose);
+                // }catch (e) {
+                //     console.log('请求出错了', e);
+                // }
             }
         });
 
