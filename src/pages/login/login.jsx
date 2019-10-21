@@ -21,6 +21,21 @@ class Login extends Component {
         console.log(values);
     };
 
+    /**
+     * 验证密码
+     */
+    validatePwd = (rule, value, callback) => {
+        if (!value)callback("请输入密码")
+        else {
+            let length = value.length
+            if (4>length)callback("密码不能小于4位")
+            else if (length>12)callback("密码不能超过12位")
+            else callback()
+        }
+        // callback() // 没有传参表示验证通过
+        // callback("xxx") // 有传参表示验证失败
+    };
+
     render() {
         /**
          * getFieldDecorator 是一个高阶函数，用来包装Input
@@ -37,18 +52,36 @@ class Login extends Component {
                     <h2>用户登录</h2>
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <Form.Item>
-                            {getFieldDecorator('username', {
-                                rules: [{required: true, message: '请输入用户名!'}],
-                            })(
-                                <Input
-                                    prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                    placeholder="用户名"
-                                />
-                            )}
+                            {
+                                /*
+                                * 用户名/密码验证规则：
+                                * 1、必须输入
+                                * 2、必须大于4位
+                                * 3、必须小于12位
+                                * 4、必须是英文、数字或下划线组成
+                                *
+                                * /^[a-zA-Z0-9_]+$/ 后面有一个“+”号，就能匹配多个字符。
+                                * 匹配规则里面没有空格，如果有就会报错。
+                                * */
+                                getFieldDecorator('username', {
+                                    rules: [
+                                        {required: true, message: '请输入用户名!'},
+                                        {max: 12, message: '用户名必须最多12位!'},
+                                        {min: 4, message: '用户名必须最少4位!'},
+                                        {pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须是英文、数字或下划线，而且不能包含空格!'},
+                                    ]
+                                })(
+                                    <Input
+                                        prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                                        placeholder="用户名"
+                                    />
+                                )}
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator('password', {
-                                rules: [{required: true, message: '请输入密码!'}],
+                                rules: [
+                                    {validator: this.validatePwd}
+                                ]
                             })(
                                 <Input
                                     prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
