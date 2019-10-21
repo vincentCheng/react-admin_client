@@ -70,6 +70,7 @@ class Login extends Component {
                                 * 匹配规则里面没有空格，如果有就会报错。
                                 * */
                                 getFieldDecorator('username', {
+                                    initialValue:'admin',
                                     rules: [
                                         {required: true, message: '请输入用户名!'},
                                         {max: 12, message: '用户名必须最多12位!'},
@@ -85,6 +86,7 @@ class Login extends Component {
                         </Form.Item>
                         <Form.Item>
                             {getFieldDecorator('password', {
+                                initialValue:'admin',
                                 rules: [
                                     {validator: this.validatePwd}
                                 ]
