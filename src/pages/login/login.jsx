@@ -15,10 +15,16 @@ class Login extends Component {
         // 阻止事件的默认行为
         event.preventDefault()
 
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
+
         // 获取表单项的输入数据
         // 返回的是一个对象（用名称做标识的是对象，用数字做下标的是数组）
-        const values = this.props.form.getFieldsValue()
-        console.log(values);
+        // const values = this.props.form.getFieldsValue()
+        // console.log(values);
     };
 
     /**
