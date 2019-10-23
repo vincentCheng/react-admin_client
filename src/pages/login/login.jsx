@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./login.less";
-import logo from "./images/logo.png"; // jsx中，需要这样引入图片。
+import logo from "../../assets/images/logo.png"; // jsx中，需要这样引入图片。
 import { Form, Icon, Input, Button, message } from 'antd';
 import { reqLogin } from "../../api";
 import { withRouter } from "react-router-dom";
