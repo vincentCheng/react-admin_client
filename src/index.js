@@ -7,5 +7,10 @@ import ReactDOM from "react-dom";
 // import 'antd/dist/antd.min.css';// 这里引入ant的样式
 
 import App from "./App";
+import { userOptions } from "./utils/storageUtils";
+import memoryUtils from "./utils/memoryUtils";
 
-ReactDOM.render(<App/>, document.getElementById('root'))
+// 读取 store 中保存的user，再保存到内存中。
+memoryUtils.user = userOptions.getUser()
+
+ReactDOM.render(<App />, document.getElementById('root'))
