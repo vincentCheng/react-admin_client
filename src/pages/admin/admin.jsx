@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
-import memoryUtils from "src/utils/memoryUtils.js";
+import memoryUtils from "../../utils/memoryUtils";
+import {Redirect} from "react-router-dom";
 
 /**
  * 后台管理的路由组件
  */
 class Admin extends Component {
     render() {
-        return (
-            <div>
-                Admin {memoryUtils.user}
-            </div>
-        );
+        let user = memoryUtils.user
+        if (!user) {
+            return <Redirect to='/login'/>
+        } else {
+            return (
+                <div>
+                    用户名: {user.data.username}
+                </div>
+            );
+        }
     }
 }
 

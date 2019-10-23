@@ -4,7 +4,7 @@ import logo from "./images/logo.png"; // jsx中，需要这样引入图片。
 import {Form, Icon, Input, Button, message} from 'antd';
 import {reqLogin} from "../../api";
 import {withRouter} from "react-router-dom";
-
+import memoryUtils from "../../utils/memoryUtils";
 
 /**
  * 登陆的路由组件，一级路由。
@@ -50,6 +50,10 @@ class Login extends Component {
                 if (1 === status) message.error(response.msg)
                 else if (200 === status) {
                     message.success('登录成功 ')
+                    /*
+                    * 存入内存
+                    * */
+                    memoryUtils.user = JSON.parse(JSON.stringify(response.data))
                     /**
                      * 所有的组件都有history
                      * 跳转到管理界面，不需要回退到登录界面。
