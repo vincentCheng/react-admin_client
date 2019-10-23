@@ -11,6 +11,7 @@ import { userOptions } from "./utils/storageUtils";
 import memoryUtils from "./utils/memoryUtils";
 
 // 读取 store 中保存的user，再保存到内存中。
-memoryUtils.user = userOptions.getUser()
+const user = userOptions.getUser();
+memoryUtils.user = user;
 
 ReactDOM.render(<App />, document.getElementById('root'))

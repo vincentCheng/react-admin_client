@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import logo from "../../assets/images/logo.png";
 import './index.less';
 import {Link} from "react-router-dom";
-import {Menu, Icon, Button} from 'antd';
+import {Menu, Icon} from 'antd';
 
 const {SubMenu} = Menu;
 
-class LeftNav extends Component {
+class Index extends Component {
     render() {
         return (
             <div>
@@ -23,28 +23,36 @@ class LeftNav extends Component {
                     theme="dark"
                 >
                     <Menu.Item key="1">
-                        <Icon type="pie-chart"/>
-                        <span>首页</span>
+                        <Link to='/home'>
+                            <Icon type="pie-chart"/>
+                            <span>首页</span>
+                        </Link>
                     </Menu.Item>
                     <SubMenu
                         key="sub1"
                         title={
                             <span>
-                                <Icon type="mail"/>
-                                <span>商品</span>
-                            </span>
+								<Icon type="mail"/>
+								<span>商品</span>
+							</span>
                         }
                     >
-                        <Menu.Item key="1">
-                            <span>
-                                <Icon type="mail"/>
-                                <span>品类管理</span>
-                            </span>
+                        <Menu.Item key="2">
+                            <Link to='/category'>
+								<span>
+									<Icon type="mail"/>
+									<span>品类管理</span>
+								</span>
+                            </Link>
                         </Menu.Item>
-                        <Menu.Item key="2"><span>
-                                <Icon type="mail"/>
-                                <span>商品管理</span>
-                            </span>
+                        <Menu.Item key="3"><span>
+                            <Link to='/product'>
+								<span>
+									<Icon type="mail"/>
+									<span>商品管理</span>
+								</span>
+							</Link>
+						</span>
                         </Menu.Item>
                     </SubMenu>
                 </Menu>
@@ -54,4 +62,4 @@ class LeftNav extends Component {
     }
 }
 
-export default LeftNav;
+export default Index;
