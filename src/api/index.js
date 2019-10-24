@@ -43,7 +43,7 @@ export const reqWeather = (city) => {
 
     return new Promise((resolve, reject) => {
         jsonp(url, {}, (err, data) => {
-            console.log('jsonp()', err, data);
+            // console.log('jsonp()', err, data);
             if (!err && data.status === 'success') {
                 let {currentCity, weather_data} = data.results[0];
                 let {date, dayPictureUrl, weather} = weather_data[0];

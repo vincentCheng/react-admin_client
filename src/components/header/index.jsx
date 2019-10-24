@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
+import {withRouter} from "react-router-dom";
 import './index.less';
 import {formateDate} from "../../utils/dateUtils";
 import memoryUtils from "../../utils/memoryUtils";
+import {menuConfig} from "../../config/menuConfig";
 import {reqWeather} from "../../api";
 
 class Index extends Component {
@@ -18,11 +20,25 @@ class Index extends Component {
     }
 
     /**
+     * 设置title
+     */
+    getTitle = (data) => {
+        // 得到当前请求路径
+        let path = this.props.location.pathname;
+        let tempData = data || menuConfig;
+
+        tempData.forEach(item => {
+            if (item.key === path) this.title = item.title;
+            else if (item.children) this.getTitle(item.children)
+        })
+    };
+
+    /**
      * 每隔一秒 获取一次当前时间
      */
     getTime = () => {
         this.time = setInterval(() => {
-            this.setState({currentTime:formateDate(Date.now())})
+            this.setState({currentTime: formateDate(Date.now())})
         }, 1000)
     };
 
@@ -30,7 +46,7 @@ class Index extends Component {
      * 获取当前天气
      */
     getWeather = async () => {
-        let {dayPictureUrl, weather} = await  reqWeather();
+        let {dayPictureUrl, weather} = await reqWeather();
         this.setState({dayPictureUrl, weather})
     };
 
@@ -39,14 +55,16 @@ class Index extends Component {
     * 一般执行异步操作
     * 发送ajax请求/jsonp请求/启动定时器。
     * */
-    componentDidMount(){
+    componentDidMount() {
         // 获取当前时间
         this.getTime();
         // 获取当前天气
         this.getWeather();
+        // 获取title
+        this.getTitle();
     }
 
-    componentWillUpdate(){
+    componentWillUpdate() {
         this.time = null;
     }
 
@@ -61,7 +79,7 @@ class Index extends Component {
                     <a href="javascript:">退出</a>
                 </div>
                 <div className='header-bottom'>
-                    <div className="header-bottom-left">首页</div>
+                    <div className="header-bottom-left">{this.title}</div>
                     <div className="header-bottom-right">
                         <span>{currentTime}</span>
                         <img src={dayPictureUrl} alt="天气"/>
@@ -73,4 +91,4 @@ class Index extends Component {
     }
 }
 
-export default Index;
+export default withRouter(Index);
