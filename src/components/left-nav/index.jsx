@@ -22,14 +22,15 @@ class Index extends Component {
                     mode="inline"
                     theme="dark"
                 >
-                    <Menu.Item key="1">
+                    <Menu.Item key="/home">
                         <Link to='/home'>
                             <Icon type="pie-chart"/>
                             <span>首页</span>
                         </Link>
                     </Menu.Item>
+
                     <SubMenu
-                        key="sub1"
+                        key="goods"
                         title={
                             <span>
 								<Icon type="mail"/>
@@ -37,7 +38,7 @@ class Index extends Component {
 							</span>
                         }
                     >
-                        <Menu.Item key="2">
+                        <Menu.Item key="/category">
                             <Link to='/category'>
 								<span>
 									<Icon type="mail"/>
@@ -45,7 +46,7 @@ class Index extends Component {
 								</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key="3"><span>
+                        <Menu.Item key="/product"><span>
                             <Link to='/product'>
 								<span>
 									<Icon type="mail"/>
@@ -55,6 +56,24 @@ class Index extends Component {
 						</span>
                         </Menu.Item>
                     </SubMenu>
+
+                    <Menu.Item key="/user">
+                        <Link to='/user'>
+								<span>
+									<Icon type="pie-chart"/>
+									<span>用户管理</span>
+								</span>
+                        </Link>
+                    </Menu.Item>
+
+                    <Menu.Item key="/role">
+                        <Link to='/role'>
+								<span>
+									<Icon type="pie-chart"/>
+									<span>角色管理</span>
+								</span>
+                        </Link>
+                    </Menu.Item>
                 </Menu>
 
             </div>
