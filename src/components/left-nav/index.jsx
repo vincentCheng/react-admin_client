@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import logo from "../../assets/images/logo.png";
 import './index.less';
-import {Link} from "react-router-dom";
+import {Link,withRouter} from "react-router-dom";
 import {Menu, Icon} from 'antd';
 import {menuConfig} from "../../config/menuConfig";
 
@@ -85,6 +85,8 @@ class Index extends Component {
     };
 
     render() {
+        const path = this.props.location.pathname;
+        
         return (
             <div>
                 <div className='left-nav'>
@@ -95,6 +97,7 @@ class Index extends Component {
                 </div>
 
                 <Menu
+                    selectedKeys={[path]}
                     mode="inline"
                     theme="dark"
                 >
@@ -103,7 +106,12 @@ class Index extends Component {
             </div>
         );
     }
-
 }
 
-export default Index;
+/*
+* withRouter 高阶组件：
+* 包装非路由组件，返回一个新的组件
+* 新的组件向非路由组件传递props的三个属性。
+* history/location/match
+* */
+export default withRouter(Index);
