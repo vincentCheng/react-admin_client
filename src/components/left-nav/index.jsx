@@ -14,7 +14,7 @@ class Index extends Component {
      * 使用map+递归调用
      * @param menuList
      */
-    static getMenuNodes(menuList) {
+    getMenuNodes_map = (menuList) => {
         return menuList.map(item => {
             if (!item.children) {
                 return (
@@ -39,11 +39,50 @@ class Index extends Component {
 							</span>
                     }
                 >
-                    {Index.getMenuNodes(item.children)}
+                    {this.getMenuNodes_map(item.children)}
                 </SubMenu>
             )
         })
-    }
+    };
+
+    /**
+     * 累计累加
+     *
+     * pre是“上一个”的意思，先往pre中添加数据。完成之后再向第二个参数“[]”添加pre的数据。
+     * 记得最后一定要
+     * return pre
+     * @param menuList
+     */
+    getMenuNodes_reduce=(menuList)=>{
+        return menuList.reduce((pre, item)=>{
+            if(!item.children){
+                pre.push((
+                    <Menu.Item key={item.key}>
+                        <Link to={item.key}>
+                            <Icon type={item.icon}/>
+                            <span>{item.title}</span>
+                        </Link>
+                    </Menu.Item>
+                ))
+            }
+            else {
+                pre.push((
+                    <SubMenu
+                        key={item.key}
+                        title={
+                            <span>
+								<Icon type={item.icon}/>
+								<span>{item.title}</span>
+							</span>
+                        }
+                    >
+                        {this.getMenuNodes_reduce(item.children)}
+                    </SubMenu>
+                ))
+            }
+            return pre;
+        },[])
+    };
 
     render() {
         return (
@@ -59,7 +98,7 @@ class Index extends Component {
                     mode="inline"
                     theme="dark"
                 >
-                    {Index.getMenuNodes(menuConfig)}
+                    {this.getMenuNodes_reduce(menuConfig)}
                 </Menu>
             </div>
         );
