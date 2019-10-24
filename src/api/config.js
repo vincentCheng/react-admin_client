@@ -3,5 +3,7 @@
  * 这里只需要""
  * @type {string}
  */
-export const BaseUrl = ""
-export const ReqType = {GET: 'GET', POST: 'POST'}
+export const BaseUrl = "";
+export const ReqType = {GET: 'GET', POST: 'POST'};
+export const ReqWeatherUrlParts = ['http://api.map.baidu.com/telematics/v3/weather?location=','&output=json&ak=3p4\n' +
+'9MVra6urFRGOT9s8UBWr2'];

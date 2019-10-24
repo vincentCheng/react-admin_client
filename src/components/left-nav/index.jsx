@@ -96,8 +96,6 @@ class Index extends Component {
     componentWillMount() {
         // 在这里先计算，并且记录要打开的子选项
         this.menuNodes = this.getMenuNodes_reduce(menuConfig)
-
-        console.log(this.menuNodes);
     }
 
     render() {
