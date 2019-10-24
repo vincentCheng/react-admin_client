@@ -1,3 +1,52 @@
-.header{
-  height: 80px;
+@import "../../pages/admin/admin";
+
+@height: 40px;
+@transparent: 20px solid transparent;
+
+.header {
+  height: 2*@height;
+  background: white;
+  .header-top {
+    height: @height;
+    border-bottom: 1px solid #1da57a;
+    text-align: right;
+    line-height: @height;
+    padding-right: @margin_width;
+    span {
+      margin-right: 10px;
+    }
+  }
+  .header-bottom {
+    height: @height;
+    display: flex;
+    align-items: center;
+    .header-bottom-left {
+      position: relative;
+      width: 25%;
+      text-align: center;
+      font-size: 20px;
+      // 伪元素
+      &::after{
+        content: '';
+        position: absolute;
+        right: 50%;// 偏移量，相对父元素右边的50%
+        top: 100%;
+        transform: translateX(50%); // 相对元素本身的移动
+        border-top: 20px solid white;
+        border-right: @transparent; // 透明，居然用 “transparent”这个值
+        border-bottom: @transparent;
+        border-left: @transparent;
+      }
+    }
+    .header-bottom-right {
+      width: 75%;
+      text-align: right;
+      padding-right: @margin_width;
+      img {
+        margin: 0 15px;
+        width: 25px;
+        height: 20px;
+      }
+    }
+  }
 }

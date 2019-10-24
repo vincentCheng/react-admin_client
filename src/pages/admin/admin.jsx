@@ -5,6 +5,7 @@ import memoryUtils from "../../utils/memoryUtils";
 import LeftNav from "../../components/left-nav";
 import Header from "../../components/header";
 import {Switch, Route, Redirect} from "react-router-dom";
+import "./admin.less";
 
 import Home from "../home/home";
 import Category from "../category/category";
@@ -30,13 +31,13 @@ class Admin extends Component {
         }
 
         return (
-            <Layout style={{minHeight: "100%"}}>
+            <Layout className='first-layout'>
                 <Sider>
                     <LeftNav/>
                 </Sider>
                 <Layout>
                     <Header/>
-                    <Content style={{background: "white"}}>
+                    <Content className='content'>
                         <Switch>
                             <Route path='/home' component={Home}/>
                             <Route path='/category' component={Category}/>
@@ -49,7 +50,7 @@ class Admin extends Component {
                             <Redirect to="/home"/>
                         </Switch>
                     </Content>
-                    <Footer style={{textAlign: "center", color: "grey"}}>这是底部</Footer>
+                    <Footer>这是底部</Footer>
                 </Layout>
             </Layout>
         );
