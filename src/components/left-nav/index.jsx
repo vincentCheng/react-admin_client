@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import logo from "../../assets/images/logo.png";
 import './index.less';
-import {Link,withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {Menu, Icon} from 'antd';
 import {menuConfig} from "../../config/menuConfig";
 
@@ -53,9 +53,11 @@ class Index extends Component {
      * return pre
      * @param menuList
      */
-    getMenuNodes_reduce=(menuList)=>{
-        return menuList.reduce((pre, item)=>{
-            if(!item.children){
+    getMenuNodes_reduce = (menuList) => {
+        let path = this.props.location.pathname;
+
+        return menuList.reduce((pre, item) => {
+            if (!item.children) {
                 pre.push((
                     <Menu.Item key={item.key}>
                         <Link to={item.key}>
@@ -66,6 +68,9 @@ class Index extends Component {
                 ))
             }
             else {
+                let cItem = item.children.find(e => e.key === path);
+                if (cItem) this.openKey = item.key;
+
                 pre.push((
                     <SubMenu
                         key={item.key}
@@ -81,27 +86,38 @@ class Index extends Component {
                 ))
             }
             return pre;
-        },[])
+        }, [])
     };
 
-    render() {
-        const path = this.props.location.pathname;
-        
-        return (
-            <div>
-                <div className='left-nav'>
-                    <Link to='/home' className='left-nav-header '>
-                        <img src={logo} alt="logo"/>
-                        <h1>硅谷后台</h1>
-                    </Link>
-                </div>
+    /**
+     * 在第一次render()之前执行一次
+     * 为第一个render()同步准备数据
+     */
+    componentWillMount() {
+        // 在这里先计算，并且记录要打开的子选项
+        this.menuNodes = this.getMenuNodes_reduce(menuConfig)
 
+        console.log(this.menuNodes);
+    }
+
+    render() {
+        let path = this.props.location.pathname;
+        // 需要打开菜单项的key
+        const openKey = this.openKey;
+
+        return (
+            <div className='left-nav'>
+                <Link to='/home' className='left-nav-header '>
+                    <img src={logo} alt="logo"/>
+                    <h1>硅谷后台</h1>
+                </Link>
                 <Menu
-                    selectedKeys={[path]}
                     mode="inline"
                     theme="dark"
+                    selectedKeys={[path]}
+                    defaultOpenKeys={[openKey]}
                 >
-                    {this.getMenuNodes_reduce(menuConfig)}
+                    {this.menuNodes}
                 </Menu>
             </div>
         );
