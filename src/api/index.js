@@ -38,7 +38,8 @@ export const reqAddUser = (username, password, phone = '', email = '', role_id =
 				收到响应自动执行函数调用的js代码，也就执行了提前定义好的回调函数，并且得到需要的结果数据。
 * */
 export const reqWeather = (city) => {
-    let url = ReqWeatherUrlParts[0] + city + ReqWeatherUrlParts[1];
+    let tempCity = city || '北京';
+    let url = ReqWeatherUrlParts[0] + tempCity + ReqWeatherUrlParts[1];
 
     return new Promise((resolve, reject) => {
         jsonp(url, {}, (err, data) => {
