@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
+import {Modal} from "antd";
 import './index.less';
 import {formateDate} from "../../utils/dateUtils";
-import memoryUtils from "../../utils/memoryUtils";
+import {userOptions} from "../../utils/storageUtils";
 import {menuConfig} from "../../config/menuConfig";
 import {reqWeather} from "../../api";
+import {LinkButton} from "../link-button";
+
+const {confirm} = Modal;
 
 class Index extends Component {
     constructor(props) {
@@ -50,6 +54,30 @@ class Index extends Component {
         this.setState({dayPictureUrl, weather})
     };
 
+    /**
+     * 退出登录
+     *
+     * todo: 这里对内存的修改，可以在index.js中使用事件监听。
+     */
+    logout = () => {
+        confirm({
+            title: '退出登录',
+            content: '您真的要退出登录吗',
+            onOk: () => {
+                userOptions.removeUser();
+                this.props.history.replace('/login');
+            },
+            onCancel: () => {
+                // console.log('取消');
+            },
+        });
+    };
+
+    componentWillMount(){
+        let user = userOptions.getUser();
+        this.username = user.data.username;
+    }
+
     /*
     * 第一次render之后执行一次
     * 一般执行异步操作
@@ -64,19 +92,21 @@ class Index extends Component {
         this.getTitle();
     }
 
-    componentWillUpdate() {
+    componentWillUnmount() {
         this.time = null;
     }
 
     render() {
         const {currentTime, dayPictureUrl, weather} = this.state;
-        const username = memoryUtils.user.username;
+        // let user = userOptions.getUser();
+        // console.log('header', user);
+        // const username = user.
 
         return (
             <div className='header'>
                 <div className='header-top'>
-                    <span>欢迎 {username}</span>
-                    <a href="javascript:">退出</a>
+                    <span>欢迎 {this.username}</span>
+                    <LinkButton onClick={this.logout}>退出</LinkButton>
                 </div>
                 <div className='header-bottom'>
                     <div className="header-bottom-left">{this.title}</div>

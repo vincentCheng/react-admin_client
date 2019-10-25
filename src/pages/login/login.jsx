@@ -4,7 +4,6 @@ import logo from "../../assets/images/logo.png"; // jsx中，需要这样引入�
 import {Form, Icon, Input, Button, message} from 'antd';
 import {reqLogin} from "../../api";
 import {withRouter} from "react-router-dom";
-import memoryUtils from "../../utils/memoryUtils";
 import {userOptions} from "../../utils/storageUtils";
 import {Redirect} from "react-router-dom";
 
@@ -17,7 +16,7 @@ class Login extends Component {
      */
     handleSubmit = (event) => {
         // 阻止事件的默认行为
-        event.preventDefault()
+        event.preventDefault();
 
         this.props.form.validateFields(async (err, values) => {
             if (!err) { // 验证通过
@@ -46,27 +45,24 @@ class Login extends Component {
                  *
                  * 请求成功了，并不等于登陆成功。
                  */
-                let response = await reqLogin(username, password)
-                let status = response.status
+                let response = await reqLogin(username, password);
+                // console.log('response()', response);
+                let status = response.status;
                 // console.log(response);
-                if (1 === status) message.error(response.msg)
+                if (1 === status) message.error(response.msg);
                 else if (200 === status) {
-                    message.success('登录成功 ')
-                    /*
-                    * 存入内存
-                    * */
-                    memoryUtils.user = response.data
+                    message.success('登录成功 ');
                     /**
                      * 存入localstorage中
                      */
-                    userOptions.setUser(response.data)
+                    userOptions.setUser(response.data);
 
                     /**
                      * 所有的组件都有history
                      * 跳转到管理界面，不需要回退到登录界面。
                      * 回退用push（这里不用），现在是在栈中的最后一个变为主界面，就是'replace'
                      * */
-                    this.props.history.replace('/')
+                    this.props.history.replace('/');
                 }
 
                 // try {
@@ -88,23 +84,27 @@ class Login extends Component {
      * 验证密码
      */
     validatePwd = (rule, value, callback) => {
-        if (!value) callback("请输入密码")
+        if (!value) callback("请输入密码");
         else {
-            let length = value.length
-            if (4 > length) callback("密码不能小于4位")
-            else if (length > 12) callback("密码不能超过12位")
-            else callback()
+            let length = value.length;
+            if (4 > length) callback("密码不能小于4位");
+            else if (length > 12) callback("密码不能超过12位");
+            else callback();
         }
         // callback() // 没有传参表示验证通过
         // callback("xxx") // 有传参表示验证失败
     };
 
+    componentWillMount(){
+        this.user = userOptions.getUser();
+    }
+
     render() {
         /**
          * 如果直接进入当前界面，检查是否登录
          */
-        let user = memoryUtils.user;
-        if (user && user.data._id) return <Redirect to='/'/>
+        let user = this.user;
+        if (user && user.data && user.data._id) return <Redirect to='/'/>;
 
         /**
          * getFieldDecorator 是一个高阶函数，用来包装Input
