@@ -69,7 +69,9 @@ class Index extends Component {
             }
             else {
                 let cItem = item.children.find(e => e.key === path);
-                if (cItem) this.openKey = item.key;
+                if (cItem) {
+                    this.openKey = item.key;
+                }
 
                 pre.push((
                     <SubMenu
@@ -93,7 +95,7 @@ class Index extends Component {
      * 在第一次render()之前执行一次
      * 为第一个render()同步准备数据
      */
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         // 在这里先计算，并且记录要打开的子选项
         this.menuNodes = this.getMenuNodes_reduce(menuConfig)
     }
@@ -101,7 +103,7 @@ class Index extends Component {
     render() {
         let path = this.props.location.pathname;
         // 需要打开菜单项的key
-        const openKey = this.openKey;
+        let openKey = this.openKey;
 
         return (
             <div className='left-nav'>

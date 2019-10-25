@@ -73,7 +73,7 @@ class Index extends Component {
         });
     };
 
-    componentWillMount(){
+    UNSAFE_componentWillMount(){
         let user = userOptions.getUser();
         this.username = user.data.username;
     }

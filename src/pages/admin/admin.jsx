@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Layout} from 'antd';
-import memoryUtils from "../../utils/memoryUtils";
-// import { userOptions } from "../../utils/storageUtils";
+import {userOptions} from "../../utils/storageUtils";
 import LeftNav from "../../components/left-nav";
 import Header from "../../components/header";
 import {Switch, Route, Redirect} from "react-router-dom";
@@ -23,8 +22,7 @@ const {Footer, Sider, Content} = Layout;
  */
 class Admin extends Component {
     render() {
-        let user = memoryUtils.user
-        // let user = userOptions.getUser();
+        let user = userOptions.getUser();
 
         if (!user) {
             return <Redirect to='/login'/>

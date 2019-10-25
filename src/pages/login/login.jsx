@@ -95,7 +95,7 @@ class Login extends Component {
         // callback("xxx") // 有传参表示验证失败
     };
 
-    componentWillMount(){
+    UNSAFE_componentWillMount(){
         this.user = userOptions.getUser();
     }
 
