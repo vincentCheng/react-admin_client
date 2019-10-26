@@ -55,3 +55,5 @@ export const reqWeather = (city) => {
         })
     });
 };
+
+export const reqCategory = (city) => {};
