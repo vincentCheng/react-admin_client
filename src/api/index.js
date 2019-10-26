@@ -49,11 +49,25 @@ export const reqWeather = (city) => {
                 let {date, dayPictureUrl, weather} = weather_data[0];
                 resolve({dayPictureUrl, weather});
             } else {
-                // console.log('失败了');
+                // console.log('失败了');s
                 message.error('获取天气数据失败');
             }
         })
     });
 };
-
-export const reqCategory = (city) => {};
+/**
+ * 获取一级（parentId===0）、二级(parentId!==0)分类列表
+ */
+export const reqCategories = (parentId = 0) => ajax('/manage/category/list', {parentId}, reqType.GET);
+/**
+ * 添加分类
+ * @param name
+ * @param parentId
+ */
+export const reqAddCategory = (name, parentId = 0) => ajax('/manage/category/add', {parentId, name}, reqType.POST);
+/**
+ * 更新分类
+ * @param categoryName
+ * @param categoryId
+ */
+export const reqUpdateCategory = (categoryName, categoryId) => ajax('/manage/category/update', {categoryName, categoryId}, reqType.POST);
