@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, Table, Button, Icon, message} from "antd";
+import {Card, Table, Button, Icon, message, Modal} from "antd";
 import {categoryTitle} from "../../config";
 import {LinkButton} from "../../components/link-button";
 import "./category.less";
@@ -17,7 +17,9 @@ class Category extends Component {
             dataLength: 0,
             flagLoading: false,
             parentId: this.parentId,
-            parentName: this.parentName
+            parentName: this.parentName,
+            visibleAdd: false,
+            visibleUpdate: false
         }
     }
 
@@ -43,7 +45,7 @@ class Category extends Component {
                 align: 'center',
                 render: (text, record, index) => ( // 例如这里：每一行都代表一个“一级分类对象”，那么这里会将这个对象当做形参。
                     <span>
-                        <LinkButton onClick={this.updateCategory}>修改分类</LinkButton>
+                        <LinkButton onClick={this.showModalUpdate}>修改分类</LinkButton>
                         {
                             this.state.parentId === 0
                                 ? <LinkButton onClick={() => {
@@ -59,32 +61,22 @@ class Category extends Component {
     /**
      * 初始化extra
      */
-    initExtra = () => {
-        this.extra = (
-            <Button type='primary' onClick={this.addCategory}>
-                <Icon type='plus'/>
-                添加
-            </Button>
-        );
-    };
+    initExtra = () => this.extra = <Button type='primary' onClick={this.showModalAdd}><Icon type='plus'/>添加</Button>;
 
     /**
      * title的显示
      */
-    getTitle = () => {
-        let {parentId, parentName} = this.state;
-
-        return 0 === parentId ? "一级分类列表" : (
+    getTitle = () =>
+        this.title = 0 === this.state.parentId ? "一级分类列表" : (
             <span>
                 <LinkButton onClick={() => {
                     this.getCategories()
                 }}>一级分类列表</LinkButton>
                 <Icon type='arrow-right'/>
                 &nbsp;
-                <span>{parentName}</span>
+                <span>{this.state.parentName}</span>
             </span>
         );
-    };
 
     /**
      * 获取一/二级分类列表
@@ -116,20 +108,6 @@ class Category extends Component {
     };
 
     /**
-     * 添加分类
-     */
-    addCategory = async () => {
-        // let result = await reqAddCategory()
-    };
-
-    /**
-     * 修改分类
-     */
-    updateCategory = () => {
-
-    };
-
-    /**
      * 展示二级分类列表
      * @param subData 这个是一级分类对象
      */
@@ -155,9 +133,58 @@ class Category extends Component {
         // this.setState({parentId: data._id, parentName: data.name}, () => this.getCategories(data._id))
     };
 
+    /**
+     * 添加分类
+     *
+     */
+    showModalAdd = () => {
+        this.setState({
+            visibleAdd: true,
+        });
+    };
+
+    handleOkAdd = e => {
+        console.log(e);
+        this.setState({
+            visibleAdd: false,
+        });
+    };
+
+    handleCancelAdd = e => {
+        console.log(e);
+        this.setState({
+            visibleAdd: false,
+        });
+    };
+
+    /**
+     * 修改分类
+     *
+     */
+    showModalUpdate = () => {
+        this.setState({
+            visibleUpdate: true,
+        });
+    };
+
+    handleOkUpdate = e => {
+        console.log(e);
+        this.setState({
+            visibleUpdate: false,
+        });
+    };
+
+    handleCancelUpdate = e => {
+        console.log(e);
+        this.setState({
+            visibleUpdate: false,
+        });
+    };
+
     UNSAFE_componentWillMount() {
         this.initColumns();
         this.initExtra();
+        this.getTitle();
     }
 
     componentDidMount() {
@@ -173,20 +200,42 @@ class Category extends Component {
          * rowKey = '_id' 表示指定服务器返回的数据中"_id"作为key
          */
         return (
-            <Card title={this.getTitle()} extra={this.extra}>
-                <Table
-                    loading={{spinning: flagLoading, delay: 300, tip: '玩命加载中!'}}
-                    bordered
-                    rowKey='_id'
-                    pagination={{
-                        defaultCurrent: 1,
-                        total: dataLength,
-                        pageSize: 10,
-                        showQuickJumper: {goButton: (<span>页</span>)}
-                    }}
-                    dataSource={data}
-                    columns={this.columns}/>
-            </Card>
+            <div>
+                <Card title={this.title} extra={this.extra}>
+                    <Table
+                        loading={{spinning: flagLoading, delay: 300, tip: '玩命加载中!'}}
+                        bordered
+                        rowKey='_id'
+                        pagination={{
+                            defaultCurrent: 1,
+                            total: dataLength,
+                            pageSize: 10,
+                            showQuickJumper: {goButton: (<span>页</span>)}
+                        }}
+                        dataSource={data}
+                        columns={this.columns}/>
+                </Card>
+                <Modal
+                    title="添加分类"
+                    visible={this.state.visibleAdd}
+                    onOk={this.handleOkAdd}
+                    onCancel={this.handleCancelAdd}
+                >
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                </Modal>
+                <Modal
+                    title="修改分类"
+                    visible={this.state.visibleUpdate}
+                    onOk={this.handleOkUpdate}
+                    onCancel={this.handleCancelUpdate}
+                >
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                </Modal>
+            </div>
         );
     }
 }
