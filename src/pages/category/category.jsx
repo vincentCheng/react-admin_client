@@ -9,18 +9,27 @@ class Category extends Component {
 
     constructor(props) {
         super(props);
-        this.columns = null;
+        this.parentId = 0;
+        this.parentName = '';
         this.state = {
-            data: undefined,
+            data: undefined, // 一级分类列表
+            subData: undefined, // 二级分类列表
             dataLength: 0,
-            flagLoading: false
+            flagLoading: false,
+            parentId: this.parentId,
+            parentName: this.parentName
         }
     }
 
     /**
      * 初始化数据
+     * 1、这里的
+     * <LinkButton onClick={this.showSubData(data)}>查看子分类</LinkButton>
+     * 中的click方法不能这样写，这样渲染的时候就会调用。正确方法如下：
+     * <LinkButton onClick={(text, record, index)=>{)}}>查看子分类</LinkButton>
+     * 视频这里已经和官网不同了，要参考官网。
      */
-    initColumns = () => {
+    initColumns = () =>
         this.columns = [
             {
                 title: '分类名称',
@@ -28,43 +37,82 @@ class Category extends Component {
             },
             {
                 title: '操作',
-                dataIndex: 'action',
                 key: 'action',
+                dataIndex: 'action',
                 width: 300,
-                render: () => (
+                align: 'center',
+                render: (text, record, index) => ( // 例如这里：每一行都代表一个“一级分类对象”，那么这里会将这个对象当做形参。
                     <span>
                         <LinkButton onClick={this.updateCategory}>修改分类</LinkButton>
-                        <LinkButton>查看子分类</LinkButton>
+                        {
+                            this.state.parentId === 0
+                                ? <LinkButton onClick={() => {
+                                    this.showSubData(record);
+                                }}>查看子分类</LinkButton>
+                                : null
+                        }
                     </span>
                 ),
-                align: 'center'
             },
         ];
+
+    /**
+     * 初始化extra
+     */
+    initExtra = () => {
+        this.extra = (
+            <Button type='primary' onClick={this.addCategory}>
+                <Icon type='plus'/>
+                添加
+            </Button>
+        );
     };
 
     /**
-     * 获取分类列表
+     * title的显示
      */
-    getCategories = async (id) => {
-        let flagLoading = false;
+    getTitle = () => {
+        let {parentId, parentName} = this.state;
 
-        flagLoading = true;
+        return 0 === parentId ? "一级分类列表" : (
+            <span>
+                <LinkButton onClick={() => {
+                    this.getCategories()
+                }}>一级分类列表</LinkButton>
+                <Icon type='arrow-right'/>
+                &nbsp;
+                <span>{parentName}</span>
+            </span>
+        );
+    };
+
+    /**
+     * 获取一/二级分类列表
+     */
+    getCategories = async (id = 0, name = '') => {
+        let flagLoading = true;
+        let parentId = id;
+        let parentName = name;
+
         this.setState({flagLoading});
-        let result = await reqCategories(id);
+        let result = await reqCategories(parentId);
+
+        // console.log('getCategories', result);
 
         if (200 !== result.status) {
-            console.log(result);
+            // console.log(result);
             message.error('获取分类列表失败');
             flagLoading = false;
             this.setState({flagLoading});
-            return;
+            return false;
         }
 
         let {data} = result.data;
         let dataLength = data.length;
 
         flagLoading = false;
-        this.setState({data, dataLength, flagLoading});
+
+        this.setState({data, dataLength, flagLoading, parentId, parentName});
     };
 
     /**
@@ -81,8 +129,35 @@ class Category extends Component {
 
     };
 
+    /**
+     * 展示二级分类列表
+     * @param subData 这个是一级分类对象
+     */
+    showSubData = async subData => {
+        let data = subData;
+        // console.log('showSubData', data);
+        let result = await this.getCategories(data._id, data.name);
+
+        /**
+         * 目前setState是异步的
+         * 后面会遇到同步的
+         *
+         * todo: 这里为什么是先更新状态，再去获取数据呢?
+         * todo: 根据实验得出结果，如果先得到数据再更新状态，不会立刻显示的。视频中有提到。
+         * todo: 回去看视频《49_尚硅谷_React全栈项目_Category组件_异步显示二级分类列表》。这里的代码是
+         *
+         * this.setState({parentId: data._id})
+         * console.log(this.state.parentId)
+         * this.getCategories()
+         *
+         * 这里的setState不是实时的。例如原来的parentId===0，那么设置之后还是0。
+         */
+        // this.setState({parentId: data._id, parentName: data.name}, () => this.getCategories(data._id))
+    };
+
     UNSAFE_componentWillMount() {
         this.initColumns();
+        this.initExtra();
     }
 
     componentDidMount() {
@@ -90,12 +165,6 @@ class Category extends Component {
     }
 
     render() {
-        const extra = (
-            <Button type='primary' onClick={this.addCategory}>
-                <Icon type='plus'/>
-                添加
-            </Button>
-        );
 
         const {data, dataLength, flagLoading} = this.state;
 
@@ -104,9 +173,9 @@ class Category extends Component {
          * rowKey = '_id' 表示指定服务器返回的数据中"_id"作为key
          */
         return (
-            <Card title={categoryTitle} extra={extra}>
+            <Card title={this.getTitle()} extra={this.extra}>
                 <Table
-                    loading={{spinning:flagLoading, delay:300, tip:'玩命加载中!'}}
+                    loading={{spinning: flagLoading, delay: 300, tip: '玩命加载中!'}}
                     bordered
                     rowKey='_id'
                     pagination={{
