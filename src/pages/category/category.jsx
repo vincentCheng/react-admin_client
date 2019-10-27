@@ -4,6 +4,8 @@ import {categoryTitle} from "../../config";
 import {LinkButton} from "../../components/link-button";
 import "./category.less";
 import {reqCategories, reqAddCategory} from "../../api";
+import AddForm from "./add-form";
+import UpdateForm from "./update-form";
 
 class Category extends Component {
 
@@ -221,9 +223,7 @@ class Category extends Component {
                     onOk={this.handleOkAdd}
                     onCancel={this.handleCancelAdd}
                 >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <AddForm/>
                 </Modal>
                 <Modal
                     title="修改分类"
@@ -231,9 +231,7 @@ class Category extends Component {
                     onOk={this.handleOkUpdate}
                     onCancel={this.handleCancelUpdate}
                 >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <UpdateForm/>
                 </Modal>
             </div>
         );
