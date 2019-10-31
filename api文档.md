@@ -513,14 +513,18 @@
     POST
 
 ### 参数类型:
-    |参数		       |是否必选 |类型     |说明
-    |categoryId    |Y       |string   |分类ID
-    |pCategoryId   |Y       |string   |父分类ID
-    |categoryName          |Y       |string   |商品名称
+    |参数		            |是否必选 |类型     |说明
+    |categoryId         |Y       |string   |分类ID
+    |pCategoryId        |Y       |string   |父分类ID
+    |name          |Y       |string   |商品名称
     |desc          |N       |string   |商品描述
     |price         |N       |string   |商品价格
     |detail        |N       |string   |商品详情
     |imgs          |N       |array   |商品图片名数组
+
+### 返回数据说明：
+	|参数             |数值         |说明
+	|status         |0/1          |0表示“已售完”，1表示“在售”
 
 ### 返回示例：
     {
