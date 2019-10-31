@@ -57,8 +57,9 @@ export const reqWeather = (city) => {
 };
 /**
  * 获取一级（parentId===0）、二级(parentId!==0)分类列表
+ * 这个parentId如果是'0'，必须变成数字0否则得不到数据。
  */
-export const reqCategories = (parentId = 0) => ajax('/manage/category/list', {parentId}, reqType.GET);
+export const reqCategorys = (parentId = 0) => ajax('/manage/category/list', {parentId}, reqType.GET)
 /**
  * 添加分类
  * @param name
@@ -70,4 +71,7 @@ export const reqAddCategory = (name, parentId = 0) => ajax('/manage/category/add
  * @param categoryName
  * @param categoryId
  */
-export const reqUpdateCategory = (categoryName, categoryId) => ajax('/manage/category/update', {categoryName, categoryId}, reqType.POST);
+export const reqUpdateCategory = (categoryName, categoryId) => ajax('/manage/category/update', {
+    categoryName,
+    categoryId
+}, reqType.POST);
