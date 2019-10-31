@@ -62,10 +62,10 @@ export const reqWeather = (city) => {
 export const reqCategorys = (parentId = 0) => ajax('/manage/category/list', {parentId}, reqType.GET)
 /**
  * 添加分类
- * @param name
+ * @param categoryName
  * @param parentId
  */
-export const reqAddCategory = (name, parentId = 0) => ajax('/manage/category/add', {parentId, name}, reqType.POST);
+export const reqAddCategory = (categoryName, parentId = 0) => ajax('/manage/category/add', {parentId, categoryName}, reqType.POST);
 /**
  * 更新分类
  * @param categoryName

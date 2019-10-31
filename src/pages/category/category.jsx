@@ -153,10 +153,12 @@ export default class Category extends Component {
 
                 // 收集数据, 并提交添加分类的请求
                 let { parentId, categoryName } = values
+                console.log('添加分类', { parentId, categoryName });
                 // 清除输入数据
                 this.form.resetFields()
                 let result = await reqAddCategory(categoryName, parentId)
-                if (result.status === 0) {
+                console.log('result', result);
+                if (result.status === 0 || result.status === 200) {
 
                     // 添加的分类就是当前分类列表下的分类
                     if (parentId === this.state.parentId) {
@@ -265,7 +267,7 @@ export default class Category extends Component {
                     loading={loading}
                     dataSource={parentId === '0' ? categorys : subCategorys}
                     columns={this.columns}
-                    pagination={{ defaultPageSize: 5, showQuickJumper: true }}
+                    pagination={{ defaultPageSize:5, showQuickJumper: true }}
                 />
 
                 <Modal

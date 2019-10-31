@@ -175,7 +175,7 @@
 	          "/charts/bar"
 	        ],
 	        "_id": "5ca9eaa1b49ef916541160d3",
-	        "name": "测试",
+	        "categoryName": "测试",
 	        "create_time": 1554639521749,
 	        "__v": 0,
 	        "auth_time": 1555145863489,
@@ -222,19 +222,19 @@
           {
             "parentId": "0",
             "_id": "5c2ed631f352726338607046",
-            "name": "分类001",
+            "categoryName": "分类001",
             "__v": 0
           },
           {
             "parentId": "0",
             "_id": "5c2ed647f352726338607047",
-            "name": "分类2",
+            "categoryName": "分类2",
             "__v": 0
           },
           {
             "parentId": "0",
             "_id": "5c2ed64cf352726338607048",
-            "name": "1分类3",
+            "categoryName": "1分类3",
             "__v": 0
           }
         ]
@@ -246,13 +246,13 @@
           {
             "parentId": "5c2ed64cf352726338607048",
             "_id": "5c2ed65df352726338607049",
-            "name": "分类3333",
+            "categoryName": "分类3333",
             "__v": 0
           },
           {
             "parentId": "5c2ed64cf352726338607048",
             "_id": "5c2ed66ff35272633860704a",
-            "name": "分类34",
+            "categoryName": "分类34",
             "__v": 0
           }
         ]
@@ -279,7 +279,7 @@
           "data": {
             "parentId": "0",
             "_id": "5c3ec1534594a00e5877b841",
-            "name": "分类9",
+            "categoryName": "分类9",
             "__v": 0
           }
         }
@@ -289,7 +289,7 @@
           "data": {
             "parentId": "5c2ed64cf352726338607048",
             "_id": "5c3ec1814594a00e5877b842",
-            "name": "分类39",
+            "categoryName": "分类39",
             "__v": 0
           }
         }
@@ -332,7 +332,7 @@
       "data": {
         "parentId": "0",
         "_id": "5c2ed631f352726338607046",
-        "name": "分类001",
+        "categoryName": "分类001",
         "__v": 0
       }
     }
@@ -366,7 +366,7 @@
                         "image-1559402396338.jpg"
                     ],
                     "_id": "5ca9e05db49ef916541160cd",
-                    "name": "联想ThinkPad 翼4809",
+                    "categoryName": "联想ThinkPad 翼4809",
                     "desc": "年度重量级新品，X390、T490全新登场 更加轻薄机身设计9",
                     "price": 65999,
                     "pCategoryId": "5ca9d6c0b49ef916541160bb",
@@ -381,7 +381,7 @@
                         "image-1559402450480.jpg"
                     ],
                     "_id": "5ca9e414b49ef916541160ce",
-                    "name": "华硕(ASUS) 飞行堡垒",
+                    "categoryName": "华硕(ASUS) 飞行堡垒",
                     "desc": "15.6英寸窄边框游戏笔记本电脑(i7-8750H 8G 256GSSD+1T GTX1050Ti 4G IPS)",
                     "price": 6799,
                     "pCategoryId": "5ca9d6c0b49ef916541160bb",
@@ -395,7 +395,7 @@
                         "image-1559402436395.jpg"
                     ],
                     "_id": "5ca9e4b7b49ef916541160cf",
-                    "name": "你不知道的JS（上卷）",
+                    "categoryName": "你不知道的JS（上卷）",
                     "desc": "图灵程序设计丛书： [You Don't Know JS:Scope & Closures] JavaScript开发经典入门图书 打通JavaScript的任督二脉",
                     "price": 35,
                     "pCategoryId": "0",
@@ -409,7 +409,7 @@
                         "image-1554638240202.jpg"
                     ],
                     "_id": "5ca9e5bbb49ef916541160d0",
-                    "name": "美的(Midea) 213升-BCD-213TM",
+                    "categoryName": "美的(Midea) 213升-BCD-213TM",
                     "desc": "爆款直降!大容量三口之家优选! *节能养鲜,自动低温补偿,36分贝静音呵护",
                     "price": 1388,
                     "pCategoryId": "5ca9d695b49ef916541160ba",
@@ -423,7 +423,7 @@
                         "image-1554638403550.jpg"
                     ],
                     "_id": "5ca9e653b49ef916541160d1",
-                    "name": "美的（Midea）KFR-35GW/WDAA3",
+                    "categoryName": "美的（Midea）KFR-35GW/WDAA3",
                     "desc": "正1.5匹 变频 智弧 冷暖 智能壁挂式卧室空调挂机",
                     "price": 2499,
                     "pCategoryId": "5ca9d695b49ef916541160ba",
@@ -464,7 +464,7 @@
                         "image-1559402396338.jpg"
                     ],
                     "_id": "5ca9e05db49ef916541160cd",
-                    "name": "联想ThinkPad 翼4809",
+                    "categoryName": "联想ThinkPad 翼4809",
                     "desc": "年度重量级新品，X390、T490全新登场 更加轻薄机身设计9",
                     "price": 65999,
                     "pCategoryId": "5ca9d6c0b49ef916541160bb",
@@ -478,7 +478,7 @@
                         "image-1554638240202.jpg"
                     ],
                     "_id": "5ca9e5bbb49ef916541160d0",
-                    "name": "美的(Midea) 213升-BCD-213TM",
+                    "categoryName": "美的(Midea) 213升-BCD-213TM",
                     "desc": "爆款直降!大容量三口之家优选! *节能养鲜,自动低温补偿,36分贝静音呵护",
                     "price": 1388,
                     "pCategoryId": "5ca9d695b49ef916541160ba",
@@ -493,7 +493,7 @@
                         "image-1554638683746.jpg"
                     ],
                     "_id": "5ca9e773b49ef916541160d2",
-                    "name": "联想ThinkPad X1 Carbon",
+                    "categoryName": "联想ThinkPad X1 Carbon",
                     "desc": "英特尔酷睿i5 14英寸轻薄笔记本电脑（i5-8250U 8G 256GSSD FHD）黑色",
                     "price": 9999,
                     "pCategoryId": "5ca9d6c0b49ef916541160bb",
@@ -516,7 +516,7 @@
     |参数		       |是否必选 |类型     |说明
     |categoryId    |Y       |string   |分类ID
     |pCategoryId   |Y       |string   |父分类ID
-    |name          |Y       |string   |商品名称
+    |categoryName          |Y       |string   |商品名称
     |desc          |N       |string   |商品描述
     |price         |N       |string   |商品价格
     |detail        |N       |string   |商品详情
@@ -531,7 +531,7 @@
                 "image-1559467198366.jpg"
             ],
             "_id": "5cf394d29929a304dcc0c6eb",
-            "name": "商品A",
+            "categoryName": "商品A",
             "desc": "一个笔记本",
             "price": 11111,
             "detail": "<p><strong>abc</strong></p>\n",
@@ -553,7 +553,7 @@
     |_id           |Y       |string   |商品ID
     |categoryId    |Y       |string   |分类ID
     |pCategoryId   |Y       |string   |父分类ID
-    |name          |Y       |string   |商品名称
+    |categoryName          |Y       |string   |商品名称
     |desc          |N       |string   |商品描述
     |price         |N       |string   |商品价格
     |detail        |N       |string   |商品详情
@@ -598,7 +598,7 @@
     {
         "status": 0,
         "data": {
-            "name": "image-1559466841118.jpg",
+            "categoryName": "image-1559466841118.jpg",
             "url": "http://localhost:5000/upload/image-1559466841118.jpg"
         }
     }
@@ -613,7 +613,7 @@
 ### 参数类型:
 
     |参数		|是否必选 |类型     |说明
-    |name    |Y       |string   |图片文件名
+    |categoryName    |Y       |string   |图片文件名
 
 ### 返回示例：
     {
@@ -638,7 +638,7 @@
         "data": {
             "menus": [],
             "_id": "5cf39a319929a304dcc0c6ec",
-            "name": "角色x",
+            "categoryName": "角色x",
             "create_time": 1559468593702,
             "__v": 0
         }
@@ -666,7 +666,7 @@
                     "/category"
                 ],
                 "_id": "5ca9eaa1b49ef916541160d3",
-                "name": "测试",
+                "categoryName": "测试",
                 "create_time": 1554639521749,
                 "__v": 0,
                 "auth_time": 1558679920395,
@@ -683,7 +683,7 @@
                     "/products"
                 ],
                 "_id": "5ca9eab0b49ef916541160d4",
-                "name": "经理",
+                "categoryName": "经理",
                 "create_time": 1554639536419,
                 "__v": 0,
                 "auth_time": 1558506990798,
@@ -698,7 +698,7 @@
                     "/role"
                 ],
                 "_id": "5ca9eac0b49ef916541160d5",
-                "name": "角色1",
+                "categoryName": "角色1",
                 "create_time": 1554639552758,
                 "__v": 0,
                 "auth_time": 1557630307021,
@@ -734,7 +734,7 @@
                 "/user"
             ],
             "_id": "5ca9eaa1b49ef916541160d3",
-            "name": "测试",
+            "categoryName": "测试",
             "create_time": 1554639521749,
             "__v": 0,
             "auth_time": 1559469116470,
