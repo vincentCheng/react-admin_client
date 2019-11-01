@@ -5,6 +5,8 @@ import ProductHome from "./home";
 import ProductAddUpdate from "./add-update";
 import ProductDetail from "./detail";
 
+import "./product.less"; // 父组件定义的样式可以影响子组件
+
 /**
  * 匹配顺序
  * 1、匹配“/”
