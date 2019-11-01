@@ -1,57 +1,17 @@
 import React, {Component} from 'react';
 import {Card, Select, Input, Button, Icon, Table} from "antd";
 import {LinkButton} from "../../components/link-button";
+import {reqProducts} from "../../api";
+import {pageSize} from "../../config";
 
 const Option = Select.Option;
-
-const dataSource = [
-    {
-        key: '1',
-        name: '胡彦斌',
-        age: 32,
-        address: '西湖区湖底公园1号',
-    },
-    {
-        key: '2',
-        name: '胡彦祖',
-        age: 42,
-        address: '西湖区湖底公园1号',
-    },
-];
 
 class ProductHome extends Component {
 
     state = {
-        products: [
-            {
-                "status": 1, // 这是状态
-                "imgs": [
-                    ""
-                ],
-                "_id": "5dbaa20495a4a93234f5eee1",
-                "categoryId": "5db3c0b7024cfb10fc2f308f",
-                "pCategoryId": "0",
-                "name": "商品名称1",
-                "desc": "商品描述1",
-                "price": 100,
-                "detail": "商品详情1",
-                "__v": 0
-            },
-            {
-                "status": 1,
-                "imgs": [
-                    ""
-                ],
-                "_id": "5dbaa25195a4a93234f5eee2",
-                "categoryId": "5db3c0b7024cfb10fc2f308f",
-                "pCategoryId": "0",
-                "name": "商品名称2",
-                "desc": "商品描述2",
-                "price": 200,
-                "detail": "商品详情2",
-                "__v": 0
-            }
-        ], // 商品的数组
+        total: 0, // 商品总数
+        products: [], // 商品的数组
+        loading: false
     }
 
     /**
@@ -98,12 +58,33 @@ class ProductHome extends Component {
         ]
     };
 
+    /**
+     * 获取指定页码的数据
+     */
+    getProducts = async (pageNum) => {
+        this.setState({loading: true});
+        let result = await reqProducts(pageNum, 3)
+        this.setState({loading:false});
+        let {status, data} = result
+
+        // console.log('result', result);
+
+        if (0 === status || 200 === status) {
+            let {total, list} = data.data;
+            this.setState({total, products: list})
+        }
+    };
+
     UNSAFE_componentWillMount() {
         this.initColumns()
     }
 
+    componentDidMount() {
+        this.getProducts(1)
+    }
+
     render() {
-        let {products, columns} = this.state;
+        let {products, total, loading} = this.state;
 
         const title = (
             <div>
@@ -124,10 +105,12 @@ class ProductHome extends Component {
         return (
             <Card title={title} extra={extra}>
                 <Table
+                    loading={loading}
                     bordered
                     rowKey='_id'
                     dataSource={products}
                     columns={this.columns}
+                    pagination={{defaultPageSize: pageSize, showQuickJumper: true, total, onChange: this.getProducts}}
                 />
             </Card>
         );

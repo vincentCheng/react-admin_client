@@ -65,7 +65,10 @@ export const reqCategorys = (parentId = 0) => ajax('/manage/category/list', {par
  * @param categoryName
  * @param parentId
  */
-export const reqAddCategory = (categoryName, parentId = 0) => ajax('/manage/category/add', {parentId, categoryName}, reqType.POST);
+export const reqAddCategory = (categoryName, parentId = 0) => ajax('/manage/category/add', {
+    parentId,
+    categoryName
+}, reqType.POST);
 /**
  * 更新分类
  * @param categoryName
@@ -75,3 +78,12 @@ export const reqUpdateCategory = (categoryName, categoryId) => ajax('/manage/cat
     categoryName,
     categoryId
 }, reqType.POST);
+/**
+ * 获取商品的分页列表
+ * @param pageNum 表示哪一页
+ * @param pageSize 每一页显示的数据数量
+ */
+export const reqProducts = (pageNum = 1, pageSize = 1) => ajax('/manage/product/list', {
+    pageSize,
+    pageNum
+}, reqType.GET);
