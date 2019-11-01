@@ -59,7 +59,7 @@ export const reqWeather = (city) => {
  * 获取一级（parentId===0）、二级(parentId!==0)分类列表
  * 这个parentId如果是'0'，必须变成数字0否则得不到数据。
  */
-export const reqCategorys = (parentId = 0) => ajax('/manage/category/list', {parentId}, reqType.GET)
+export const reqCategorys = (parentId = 0) => ajax('/manage/category/list', {parentId}, reqType.GET);
 /**
  * 添加分类
  * @param categoryName
@@ -86,4 +86,16 @@ export const reqUpdateCategory = (categoryName, categoryId) => ajax('/manage/cat
 export const reqProducts = (pageNum = 1, pageSize = 1) => ajax('/manage/product/list', {
     pageSize,
     pageNum
+}, reqType.GET);
+/**
+ * 搜索商品分页列表
+ * @param pageNum 页码
+ * @param pageSize 每页数据量
+ * @param searchName 产品名/产品描述
+ * @param searchType 这个的值是 productName/productDesc 。说明：让一个变量的值成为key，必须加上中括号。
+ */
+export const reqSearchProducts = ({pageNum, pageSize, searchName, searchType}) => ajax('/manage/product/search', {
+    pageNum,
+    pageSize,
+    [searchType]: searchName
 }, reqType.GET);
