@@ -27,9 +27,14 @@ class ProductDetail extends Component {
                     </Item>
                     <Item>
                         <span className='left'>商品图片：</span>
-                        <span>
-                            <img src="" alt=""/>
+                        <span className='product-img'>
+                            <img src="http://localhost:5000/upload/image-1572614458008.jpg" alt="img"/>
+                            <img src="http://localhost:5000/upload/image-1572613960325.jpg" alt="img"/>
                         </span>
+                    </Item>
+                    <Item>
+                        <span className='left'>商品详情：</span>
+                        <span dangerouslySetInnerHTML={{__html: '<h1 style="color: red">商品详情介绍</h1>'}}/>
                     </Item>
                 </List>
             </Card>
