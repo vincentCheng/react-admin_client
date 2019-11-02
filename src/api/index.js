@@ -79,6 +79,11 @@ export const reqUpdateCategory = (categoryName, categoryId) => ajax('/manage/cat
     categoryId
 }, reqType.POST);
 /**
+ * 根据_id获取分类名称
+ * @param categoryId
+ */
+export const reqCategory = categoryId => ajax('/manage/category/info', {categoryId}, reqType.GET);
+/**
  * 获取商品的分页列表
  * @param pageNum 表示哪一页
  * @param pageSize 每一页显示的数据数量

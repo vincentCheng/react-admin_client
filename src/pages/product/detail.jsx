@@ -2,14 +2,43 @@ import React, {Component} from 'react';
 import {Card, Icon, List} from "antd";
 import {LinkButton} from "../../components/link-button";
 import {BASE_IMG_URL} from "../../config";
+import {reqCategory} from "../../api";
 
 const Item = List.Item;
 
 class ProductDetail extends Component {
+
+    state = {
+        cName1: '', // 一级分类名称
+        cName2: '', // 二级分类名称
+    };
+
+    async componentDidMount() {
+        let {pCategoryId, categoryId} = this.props.location.state;
+        if (0 === pCategoryId || '0' === pCategoryId) { // 一级分类下的商品
+            let result = await reqCategory(categoryId);
+            // debugger;
+            let {name} = result.data.data;
+            this.setState({cName1: name});
+        } else { // 二级分类下的商品
+            /*
+            * 这样无法一次性发送两个请求。
+            * */
+            // let result1 = await reqCategory(pCategoryId);
+            // let result2 = await reqCategory(categoryId);
+            // this.setState({cName1: result1.data.data.name, cName2: result2.data.data.name});
+
+            let results = await Promise.all([reqCategory(pCategoryId), reqCategory(categoryId)]);
+
+            this.setState({cName1: results[0].data.data.name, cName2: results[1].data.data.name});
+        }
+    }
+
     render() {
 
         // 读取携带过来的state数据
         let {name, desc, price, imgs, detail} = this.props.location.state;
+        let {cName1, cName2} = this.state;
 
         let title = (
             <span>
@@ -35,9 +64,10 @@ class ProductDetail extends Component {
                         <span className='left'>商品价格：</span>
                         <span>￥{price}</span>
                     </Item>
+
                     <Item>
                         <span className='left'>所属分类：</span>
-                        <span>电脑 ---> 笔记本</span>
+                        <span>{cName2 ? `${cName1} ---> ${cName2}` : cName1}</span>
                     </Item>
                     <Item>
                         <span className='left'>商品图片：</span>
