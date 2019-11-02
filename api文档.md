@@ -464,7 +464,7 @@
                         "image-1559402396338.jpg"
                     ],
                     "_id": "5ca9e05db49ef916541160cd",
-                    "categoryName": "联想ThinkPad 翼4809",
+                    "name": "联想ThinkPad 翼4809",
                     "desc": "年度重量级新品，X390、T490全新登场 更加轻薄机身设计9",
                     "price": 65999,
                     "pCategoryId": "5ca9d6c0b49ef916541160bb",
@@ -478,7 +478,7 @@
                         "image-1554638240202.jpg"
                     ],
                     "_id": "5ca9e5bbb49ef916541160d0",
-                    "categoryName": "美的(Midea) 213升-BCD-213TM",
+                    "name": "美的(Midea) 213升-BCD-213TM",
                     "desc": "爆款直降!大容量三口之家优选! *节能养鲜,自动低温补偿,36分贝静音呵护",
                     "price": 1388,
                     "pCategoryId": "5ca9d695b49ef916541160ba",
@@ -493,7 +493,7 @@
                         "image-1554638683746.jpg"
                     ],
                     "_id": "5ca9e773b49ef916541160d2",
-                    "categoryName": "联想ThinkPad X1 Carbon",
+                    "name": "联想ThinkPad X1 Carbon",
                     "desc": "英特尔酷睿i5 14英寸轻薄笔记本电脑（i5-8250U 8G 256GSSD FHD）黑色",
                     "price": 9999,
                     "pCategoryId": "5ca9d6c0b49ef916541160bb",
@@ -554,9 +554,9 @@
 
 ### 参数类型:
     |参数		       |是否必选 |类型     |说明
-    |_id           |Y       |string   |商品ID
-    |categoryId    |Y       |string   |分类ID
-    |pCategoryId   |Y       |string   |父分类ID
+    |_id                |Y             |string   |商品ID
+    |categoryId    |Y            |string   |分类ID
+    |pCategoryId   |Y           |string   |父分类ID
     |categoryName          |Y       |string   |商品名称
     |desc          |N       |string   |商品描述
     |price         |N       |string   |商品价格
