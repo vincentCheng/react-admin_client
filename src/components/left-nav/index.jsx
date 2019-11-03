@@ -54,7 +54,8 @@ class Index extends Component {
      * @param menuList
      */
     getMenuNodes_reduce = (menuList) => {
-        let path = this.props.location.pathname;
+        let {pathname} = this.props.location;
+        let path = pathname.indexOf('/product') === 0 ? '/product' : pathname;
 
         return menuList.reduce((pre, item) => {
             if (!item.children) {
@@ -101,7 +102,8 @@ class Index extends Component {
     }
 
     render() {
-        let path = this.props.location.pathname;
+        let {pathname} = this.props.location;
+        let path = pathname.indexOf('/product') === 0 ? '/product' : pathname; //说明当前请求的是商品管理或者子路由
         // 需要打开菜单项的key
         let openKey = this.openKey;
 

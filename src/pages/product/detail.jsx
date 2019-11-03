@@ -15,7 +15,7 @@ class ProductDetail extends Component {
 
     async componentDidMount() {
         let {pCategoryId, categoryId} = this.props.location.state;
-        if (0 === pCategoryId || '0' === pCategoryId) { // 一级分类下的商品
+        if (0 == pCategoryId) { // 一级分类下的商品
             let result = await reqCategory(categoryId);
             // debugger;
             let {name} = result.data.data;
