@@ -55,7 +55,8 @@ class ProductHome extends Component {
                 render: product => (
                     <span>
                         <LinkButton onClick={() => this.props.history.push('/product/detail', product)}>详情</LinkButton>
-                        <LinkButton>修改</LinkButton>
+                        {/*两种不同的传参方法，都试试*/}
+                        <LinkButton onClick={() => this.props.history.push('/product/add-update', product)}>修改</LinkButton>
                     </span>
                 )
             },
