@@ -104,3 +104,12 @@ export const reqSearchProducts = ({pageNum, pageSize, searchName, searchType}) =
     pageSize,
     [searchType]: searchName
 }, reqType.GET);
+/**
+ * 对商品进行上架/下架处理
+ * @param productId
+ * @param status
+ */
+export const reqUpdateStatus = (productId, status) => ajax('/manage/product/updateStatus', {
+    productId,
+    status
+}, reqType.POST);

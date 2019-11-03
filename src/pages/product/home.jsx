@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Card, Select, Input, Button, Icon, Table} from "antd";
+import {Card, Select, Input, Button, Icon, Table, message} from "antd";
 import {LinkButton} from "../../components/link-button";
-import {reqProducts, reqSearchProducts} from "../../api";
+import {reqProducts, reqSearchProducts, reqUpdateStatus} from "../../api";
 import {PAGE_SIZE} from "../../config";
 
 const Option = Select.Option;
@@ -37,12 +37,14 @@ class ProductHome extends Component {
             {
                 width: 100,
                 title: '状态',
-                dataIndex: 'status',
-                render: status => {
+                // dataIndex: 'status', // 这里需要获取商品id，所以不能写status
+                render: product => {
+                    let {status, _id} = product;
                     return (
                         <span>
-                            <span>在售</span>
-                            <Button type='primary'>下架</Button>
+                            <span>{status === 1 ? '在售' : '已下架'}</span>
+                            <Button type='primary'
+                                    onClick={() => this.updateStatus(_id, status === 1 ? 2 : 1)}>{status === 1 ? '下架' : '上架'}</Button>
                         </span>
                     )
                 }
@@ -52,7 +54,7 @@ class ProductHome extends Component {
                 title: '操作',
                 render: product => (
                     <span>
-                        <LinkButton onClick={()=>this.props.history.push('/product/detail', product)}>详情</LinkButton>
+                        <LinkButton onClick={() => this.props.history.push('/product/detail', product)}>详情</LinkButton>
                         <LinkButton>修改</LinkButton>
                     </span>
                 )
@@ -64,6 +66,7 @@ class ProductHome extends Component {
      * 获取指定页码的数据
      */
     getProducts = async (pageNum = 1) => {
+        this.pageNum = pageNum; // 让别的方法也能看到当前页
         let {searchName, searchType} = this.state;
 
         this.setState({loading: true});
@@ -88,6 +91,20 @@ class ProductHome extends Component {
         }
     };
 
+    /**
+     * 更新产品上架/下架信息
+     */
+    updateStatus = async (id, status) => {
+        let result = await reqUpdateStatus(id, status);
+        if (result.data.status !== 0) {
+            // console.log(result);
+            message.error('更新产品上架/下架信息失败');
+            return
+        }
+        message.success('更新商品成功');
+        this.getProducts(this.pageNum);// 这里不知道更新第几页，定义 this.pageNum 记录当前的页数
+    };
+
     UNSAFE_componentWillMount() {
         this.initColumns()
     }
@@ -107,7 +124,7 @@ class ProductHome extends Component {
                 </Select>
                 <Input placeholder='关键字' style={{width: 100, margin: '0 15px'}} value={searchName}
                        onChange={e => this.setState({searchName: e.target.value})}/>
-                <Button type='primary' onClick={()=>{this.getProducts()}}>搜索</Button>
+                <Button type='primary' onClick={() => {this.getProducts()}}>搜索</Button>
             </div>
         )
         const extra = (

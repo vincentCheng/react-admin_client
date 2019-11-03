@@ -579,7 +579,7 @@
 
     |参数		      |是否必选 |类型     |说明
     |productId    |Y       |string   |商品名称
-    |status       |Y       |number   |商品状态值
+    |status       |Y       |number   |商品状态值 1代表“在售”，2代表“已下架”
 
 ### 返回示例：
     {
