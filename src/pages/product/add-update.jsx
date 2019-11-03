@@ -5,7 +5,7 @@ import {reqCategorys} from "../../api";
 
 const {Item} = Form;
 const {TextArea} = Input;
-const options = [
+const options1 = [
     {
         value: 'zhejiang',
         label: 'Zhejiang',
@@ -21,7 +21,7 @@ const options = [
 class ProductAddUpdate extends Component {
 
     state = {
-        options,
+        options: null,
     };
 
     /**
@@ -43,46 +43,16 @@ class ProductAddUpdate extends Component {
         let targetOption = selectedOptions[selectedOptions.length - 1];
         targetOption.loading = true;
 
-        let result = await this.getCategorys(targetOption.value);
+        // 得到二级分类列表
+        let subCategories = await this.getCategorys(targetOption.value);
+        // todo 这里如果是一级列表，那么要点击两次。很麻烦，需要优化。
         targetOption.loading = false;
-        console.log(result);
 
-        // todo 这里遇到的问题是不知道怎么设置二级列表
-        if (!result) {
-            targetOption.children = [
-                {label: '无', value: -1, isLeaf: true}
-            ]
+        if (subCategories && subCategories.length > 0) {
+            this.initOptions(subCategories, targetOption);
+        } else { // 当前页面中的分类不是二级分类
+            targetOption.isLeaf = true;
         }
-        else if (result.status * 1 === 200 || result.status * 1 === 0) {
-            // console.log(result);
-            // targetOption.children=result.data.data.map(item=>{
-            //     let tempresult;
-            //
-            //     item._id
-            //
-            //     return
-            // })
-        }
-
-        // load options lazily
-        // setTimeout(() => {
-        //     targetOption.loading = false;
-        //     targetOption.children = [
-        //         {
-        //             label: `${targetOption.label} Dynamic 1`,
-        //             value: 'dynamic1',
-        //             isLeaf: true
-        //         },
-        //         {
-        //             label: `${targetOption.label} Dynamic 2`,
-        //             value: 'dynamic2',
-        //             isLeaf: true
-        //         },
-        //     ];
-        //     this.setState({
-        //         options: [...this.state.options],
-        //     });
-        // }, 1000);
     };
 
     /**
@@ -98,25 +68,34 @@ class ProductAddUpdate extends Component {
     /**
      * 根据categorys生成options数组
      * 更新状态
+     * @param categorys 异步获取的数据
+     * @param parentOptions 如果这个有值，表示需要给二级列表设置数据
      */
-    initOptions = categorys => {
+    initOptions = (categorys, parentOptions) => {
         let options = categorys.map(item => ({
             label: item.name,
             value: item._id,
             isLeaf: item.parentId * 1 !== 0
         }));
 
-        this.setState({options});
+        if (!parentOptions) {
+            this.setState({options});
+            return
+        }
+
+        parentOptions.children = options;
     };
 
     /**
      * 异步获取一级/二级分类列表
      */
-    getCategorys = async parentId => {
+    getCategorys = async (parentId = 0) => {
         let result = await reqCategorys(parentId);
 
         if (result.status === 0 || result.status === 200) {
-            this.initOptions(result.data.data)
+            let tempResult = result.data.data;
+            if (0 === parentId * 1) this.initOptions(tempResult); // 如果是一级分类列表
+            else return tempResult; // 如果是二级列表
         }
     };
 
