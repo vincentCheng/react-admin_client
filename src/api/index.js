@@ -113,3 +113,7 @@ export const reqUpdateStatus = (productId, status) => ajax('/manage/product/upda
     productId,
     status
 }, reqType.POST);
+/**
+ * 删除图片
+ */
+export const reqImgDelete = name => ajax('/manage/img/delete', {name}, reqType.POST);

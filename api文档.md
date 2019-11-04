@@ -602,7 +602,7 @@
     {
         "status": 0,
         "data": {
-            "categoryName": "image-1559466841118.jpg",
+            "name": "image-1559466841118.jpg",
             "url": "http://localhost:5000/upload/image-1559466841118.jpg"
         }
     }
@@ -617,7 +617,7 @@
 ### 参数类型:
 
     |参数		|是否必选 |类型     |说明
-    |categoryName    |Y       |string   |图片文件名
+    |name    |Y       |string   |图片文件名
 
 ### 返回示例：
     {

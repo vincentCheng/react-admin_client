@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
-import {Card, Form, Input, Cascader, Upload, Button, Icon} from "antd";
+import React, {Component, createRef} from 'react';
+import {Card, Form, Input, Cascader, Button, Icon} from "antd";
 import {LinkButton} from "../../components/link-button";
-import {reqCategorys, reqCategory} from "../../api";
+import {reqCategorys} from "../../api";
+import PicturesWall from "./pictures-wall";
 
 const {Item} = Form;
 const {TextArea} = Input;
@@ -13,6 +14,11 @@ class ProductAddUpdate extends Component {
 
         this.isUpdate = false; // 是否是修改的标识。如果点击了“修改”按钮，就是true
         this.product = {};
+
+        // 创建保存ref标识的标签对象的容器
+        // 存储的是 PicturesWall 的对象
+        // 使用 this.pw.current 访问 PicturesWall 中的 getImgs() 方法
+        this.pw = createRef();
     }
 
     state = {
@@ -62,7 +68,10 @@ class ProductAddUpdate extends Component {
     submit = () => {
         // 表单验证通过才发送请求。
         this.props.form.validateFields((error, values) => {
-            console.log('values', values);
+            if (!error){
+                const imgs = this.pw.current.getImgs();
+                console.log('imgs', imgs);
+            }
         })
     };
 
@@ -195,7 +204,7 @@ class ProductAddUpdate extends Component {
                         }
                     </Item>
                     <Item label='商品图片'>
-                        商品图片
+                        <PicturesWall ref={this.pw}/>
                     </Item>
                     <Item label='商品详情'>
                         商品详情
