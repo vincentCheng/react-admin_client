@@ -73,7 +73,7 @@ class ProductAddUpdate extends Component {
             if (!error) {
                 const imgs = this.pw.current.getImgs();
                 const detail = this.richTextEditor.current.getDetail();
-                console.log('detail', detail);
+                // console.log('detail', detail);
             }
         })
     };
