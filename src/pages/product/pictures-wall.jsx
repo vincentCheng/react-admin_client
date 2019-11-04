@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Upload, Icon, Modal, message} from 'antd';
 import {reqImgDelete} from "../../api";
+import PropTypes from "prop-types";
+import {BASE_IMG_URL} from "../../config";
 
 function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -12,17 +14,34 @@ function getBase64(file) {
 }
 
 class PicturesWall extends Component {
-    state = {
-        previewVisible: false, // 是否显示大图预览界面
-        previewImage: '', // 大图的url
-        // {
-        //     uid: '-1',
-        //     name: 'image.png',
-        //     status: 'done',
-        //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        // }
-        fileList: [],
-    };
+
+    constructor(props) {
+        super(props);
+
+        let fileList = [];
+
+        // 如果传入了imgs属性
+        const {imgs} = this.props;
+
+        if (imgs && imgs.length > 0) fileList = imgs.map((img, index) => ({
+            uid: -index,
+            name: img,
+            status: 'done',
+            url: BASE_IMG_URL + img
+        }));
+
+        this.state = {
+            previewVisible: false, // 是否显示大图预览界面
+            previewImage: '', // 大图的url
+            // {
+            //     uid: '-1',
+            //     name: 'image.png',
+            //     status: 'done',
+            //     url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+            // }
+            fileList,
+        };
+    }
 
     /**
      * 获取所有已经上传图片文件名的数组
@@ -62,18 +81,23 @@ class PicturesWall extends Component {
                     message.error('上传图片失败');
                     break;
                 }
-                // 一旦上传成功，将当前上传的file信息修正。
+                // 一旦上传成功，将当前上传的file信息修正。实际上这个修改没用。
                 message.success('上传图片成功');
-                const {name, url} = response.data;
-                // console.log('成功', name);
-                file.name = name;
-                file.url = url;
+                // const {name, url} = response.data;
+                // // console.log('成功', name);
+                // file.name = name;
+                // file.url = url;
                 break;
             case 'removed':
                 // 这里的删除是删除本地的，还需要删除服务器的。
-                // console.log(file.name);
-                const result = await reqImgDelete(file.response.data.name);
-                if (result.status === 200 && result.data.status === 0) {
+                // 如果上传完成之后，立刻删除照片，那么当前照片的名字是读取不到上面修改后的名字的。
+                // 如果重新进入当前界面，file.name 是能读取到服务器中的照片名字的。
+                // 如果没有response，那么是重新进入当前界面
+                // 如果有response，表示是上传完成，没有退出界面。
+                let fileName = file.response ? file.response.data.name : file.name;
+                const result = await reqImgDelete(fileName);
+                // console.log(fileName, result);
+                if (result.status*1 === 200 && result.data.status*1 === 0) {
                     message.success('删除图片成功');
                     break;
                 }
@@ -115,5 +139,9 @@ class PicturesWall extends Component {
         );
     }
 }
+
+PicturesWall.propTypes = {
+    imgs: PropTypes.array
+};
 
 export default PicturesWall;

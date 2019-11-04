@@ -134,7 +134,7 @@ class ProductAddUpdate extends Component {
 
     render() {
 
-        const {pCategoryId, categoryId} = this.product;
+        const {pCategoryId, categoryId, imgs} = this.product;
         // 显示商品的级联。这个用于初始化。这里的id会自动和this.state.options对应
         const categoryIds = [];
         if (this.isUpdate) {
@@ -204,7 +204,7 @@ class ProductAddUpdate extends Component {
                         }
                     </Item>
                     <Item label='商品图片'>
-                        <PicturesWall ref={this.pw}/>
+                        <PicturesWall ref={this.pw} imgs={imgs}/>
                     </Item>
                     <Item label='商品详情'>
                         商品详情
