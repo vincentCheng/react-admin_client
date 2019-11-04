@@ -3,6 +3,7 @@ import {Card, Form, Input, Cascader, Button, Icon} from "antd";
 import {LinkButton} from "../../components/link-button";
 import {reqCategorys} from "../../api";
 import PicturesWall from "./pictures-wall";
+import RichTextEditor from "./rich-text-editor";
 
 const {Item} = Form;
 const {TextArea} = Input;
@@ -19,6 +20,7 @@ class ProductAddUpdate extends Component {
         // 存储的是 PicturesWall 的对象
         // 使用 this.pw.current 访问 PicturesWall 中的 getImgs() 方法
         this.pw = createRef();
+        this.richTextEditor = createRef();
     }
 
     state = {
@@ -68,9 +70,10 @@ class ProductAddUpdate extends Component {
     submit = () => {
         // 表单验证通过才发送请求。
         this.props.form.validateFields((error, values) => {
-            if (!error){
+            if (!error) {
                 const imgs = this.pw.current.getImgs();
-                console.log('imgs', imgs);
+                const detail = this.richTextEditor.current.getDetail();
+                console.log('detail', detail);
             }
         })
     };
@@ -134,7 +137,7 @@ class ProductAddUpdate extends Component {
 
     render() {
 
-        const {pCategoryId, categoryId, imgs} = this.product;
+        const {pCategoryId, categoryId, imgs, detail} = this.product;
         // 显示商品的级联。这个用于初始化。这里的id会自动和this.state.options对应
         const categoryIds = [];
         if (this.isUpdate) {
@@ -142,7 +145,7 @@ class ProductAddUpdate extends Component {
             if (pCategoryId !== '0') {
                 categoryIds.push(pCategoryId);
                 categoryIds.push(categoryId);
-            }else {
+            } else {
                 // 如果是一级分类
                 categoryIds.push(categoryId);
             }
@@ -206,8 +209,13 @@ class ProductAddUpdate extends Component {
                     <Item label='商品图片'>
                         <PicturesWall ref={this.pw} imgs={imgs}/>
                     </Item>
-                    <Item label='商品详情'>
-                        商品详情
+                    {/*这里的指定很重要，总共默认分为24份。这里设定总共22份*/}
+                    {/*{*/}
+                    {/*labelCol: {span: 2}, // 左侧label的宽度*/}
+                    {/*wrapperCol: {span: 8}, // 右侧的宽度*/}
+                    {/*}*/}
+                    <Item label='商品详情' labelCol={{span: 2}} wrapperCol={{span: 20}}>
+                        <RichTextEditor ref={this.richTextEditor} detail={detail}/>
                     </Item>
                     <Item>
                         {/*这里不用onsubmit，那么就不会提交表单。如果使用onsubmit那么需要阻止默认行为。*/}
