@@ -34,6 +34,10 @@ class RichTextEditor extends Component {
 
     /**
      * 界面里面还必须写alt的信息才能成功add
+     *
+     * todo 删除富文本中的本地图片，服务器中的怎么删除?
+     * todo 群里面的大佬推荐使用这个 https://help.aliyun.com/document_detail/32068.html?spm=a2c4g.11186623.2.14.401f5d26l4xXbp#concept-32068-zh
+     * todo 或者使用 @alicloud/pop-core 调一下resetful api.
      * @param file
      * @return {Promise<any>}
      */
@@ -49,7 +53,9 @@ class RichTextEditor extends Component {
                 xhr.addEventListener('load', () => {
                     const response = JSON.parse(xhr.responseText);
                     // resolve(response);
-                    resolve({data: {link: response.data.url}}); // 这部分代码是百度得到的，反正这个插件上传图片不好用。
+                    // 这部分代码是百度得到的，反正这个插件上传图片不好用。
+                    // 那么，上传图片有没有限制？如果删除本地的图片，那么服务器中的图片无法删除的，怎么办？
+                    resolve({data: {link: response.data.url}});
                 });
                 xhr.addEventListener('error', () => {
                     const error = JSON.parse(xhr.responseText);
@@ -76,6 +82,9 @@ class RichTextEditor extends Component {
                     editorState={editorState}
                     editorStyle={{border: '1px solid black', minHeight: 200, paddingLeft: 10}}
                     onEditorStateChange={this.onEditorStateChange}
+                    localization={{
+                        locale: 'zh',
+                    }}
                     toolbar={{
                         inline: { inDropdown: true },
                         list: { inDropdown: true },

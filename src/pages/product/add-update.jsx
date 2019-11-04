@@ -1,7 +1,7 @@
 import React, {Component, createRef} from 'react';
-import {Card, Form, Input, Cascader, Button, Icon} from "antd";
+import {Card, Form, Input, Cascader, Button, Icon, message} from "antd";
 import {LinkButton} from "../../components/link-button";
-import {reqCategorys} from "../../api";
+import {reqCategorys, reqAddOrUpdateProduct} from "../../api";
 import PicturesWall from "./pictures-wall";
 import RichTextEditor from "./rich-text-editor";
 
@@ -69,11 +69,50 @@ class ProductAddUpdate extends Component {
      */
     submit = () => {
         // 表单验证通过才发送请求。
-        this.props.form.validateFields((error, values) => {
+        this.props.form.validateFields(async (error, values) => {
+
             if (!error) {
+                // 1 收集数据封装成product对象。结构中的数据来自于 getFieldDecorator('categoryIds', {}) 等。
+                let _id;
+                if (this.isUpdate) _id = this.product._id; // 表示更新商品
+
+                const {name, desc, price, categoryIds} = values;
+                let pCategoryId, categoryId;
+                if (1 === categoryIds.length) {
+                    pCategoryId = '0'
+                    categoryId = categoryIds[0]
+                } else {
+                    pCategoryId = categoryIds[0]
+                    categoryId = categoryIds[1]
+                }
                 const imgs = this.pw.current.getImgs();
+                // console.log('获取上传之后的图片名字', imgs);
                 const detail = this.richTextEditor.current.getDetail();
-                // console.log('detail', detail);
+
+                let product = {
+                    categoryId,
+                    pCategoryId,
+                    name,
+                    desc,
+                    price,
+                    detail,
+                    imgs
+                };
+                if (this.isUpdate) product._id = this.product._id;
+
+                // 2 调用请求接口函数添加/更新
+                const result = await reqAddOrUpdateProduct(product);
+
+                // console.log('result', result);
+
+                // 3 根据结果提示
+                const tempMsg = this.isUpdate?'更新':'添加';
+                if (result.status === 200 && result.data.status === 0) {
+                    message.success(`${tempMsg}成功`);
+                    this.props.history.goBack();
+                } else {
+                    message.error(`${tempMsg}失败`)
+                };
             }
         })
     };
@@ -188,7 +227,7 @@ class ProductAddUpdate extends Component {
                     <Item label='商品价格'>
                         {
                             getFieldDecorator('price', {
-                                initialValue: this.product.price || 0,
+                                initialValue: this.product.price || '',
                                 rules: [{required: true, message: '必须输入商品价格'}, {validator: this.validatorPrice}],
                             })(<Input type='number' placeholder="请输入商品价格" addonAfter='元'/>)
                         }

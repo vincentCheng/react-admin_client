@@ -117,3 +117,8 @@ export const reqUpdateStatus = (productId, status) => ajax('/manage/product/upda
  * 删除图片
  */
 export const reqImgDelete = name => ajax('/manage/img/delete', {name}, reqType.POST);
+/**
+ * 添加/修改商品
+ * @param product
+ */
+export const reqAddOrUpdateProduct = product => ajax('/manage/product/' + (product._id ? 'update' : 'add'), product, reqType.POST);

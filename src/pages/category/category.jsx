@@ -240,8 +240,8 @@ export default class Category extends Component {
         // 读取指定的分类
         let category = this.category || {} // 如果还没有指定一个空对象
 
-        console.log(categorys);
-        console.log(category);
+        // console.log(categorys);
+        // console.log(category);
 
         // card的左侧
         let title = parentId === '0' ? '一级分类列表' : (

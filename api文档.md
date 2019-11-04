@@ -557,7 +557,7 @@
     |_id                |Y             |string   |商品ID
     |categoryId    |Y            |string   |分类ID
     |pCategoryId   |Y           |string   |父分类ID
-    |categoryName          |Y       |string   |商品名称
+    |name          |Y       |string   |商品名称
     |desc          |N       |string   |商品描述
     |price         |N       |string   |商品价格
     |detail        |N       |string   |商品详情

@@ -84,7 +84,7 @@ class ProductHome extends Component {
 
         let {status, data} = result
 
-        // console.log('result', result);
+        // console.log('product home 初始化', result);
 
         if (0 === status || 200 === status) {
             let {total, list} = data.data;

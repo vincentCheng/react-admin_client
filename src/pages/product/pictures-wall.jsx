@@ -23,6 +23,8 @@ class PicturesWall extends Component {
         // 如果传入了imgs属性
         const {imgs} = this.props;
 
+        // console.log(imgs);
+
         if (imgs && imgs.length > 0) fileList = imgs.map((img, index) => ({
             uid: -index,
             name: img,
@@ -83,10 +85,20 @@ class PicturesWall extends Component {
                 }
                 // 一旦上传成功，将当前上传的file信息修正。实际上这个修改没用。
                 message.success('上传图片成功');
-                // const {name, url} = response.data;
-                // // console.log('成功', name);
+                const {name, url} = response.data;
+                // console.log('上传成功的response', response);
+                // console.log('file ',file);
                 // file.name = name;
                 // file.url = url;
+
+                // 尝试修改 this.state.fileList
+                this.state.fileList.forEach(item=>{
+                    if (item.uid === file.uid) {
+                        item.name = name;
+                        item.url = url;
+                    }
+                });
+
                 break;
             case 'removed':
                 // 这里的删除是删除本地的，还需要删除服务器的。
