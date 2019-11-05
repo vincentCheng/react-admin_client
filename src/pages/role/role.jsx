@@ -4,6 +4,7 @@ import {PAGE_SIZE} from "../../config";
 import {reqRoles, reqAddRoles, reqUpdateRole} from "../../api";
 import AddForm from "../role/add-form";
 import AuthForm from "../role/auth-form";
+import {formateDate} from "../../utils/dateUtils";
 
 class Role extends Component {
     constructor(props) {
@@ -30,10 +31,12 @@ class Role extends Component {
             {
                 title: '创建时间',
                 dataIndex: 'create_time',
+                render: create_time => formateDate(create_time)
             },
             {
                 title: '授权时间',
                 dataIndex: 'auth_time',
+                render: formateDate
             },
             {
                 title: '授权人',
@@ -97,11 +100,11 @@ class Role extends Component {
                 this.setState(state => ({
                     roles: [...state.roles, result.data.data]
                 }))
-            }else {
+            } else {
                 message.error('创建角色失败')
             }
 
-            this.setState({isShowAdd:false});
+            this.setState({isShowAdd: false});
         })
     };
 
@@ -115,7 +118,7 @@ class Role extends Component {
         // const auth_name = userOptions.getUser().data.username;
         // const result = await reqUpdateRole(_id, menus, auth_name);
         const result = await reqUpdateRole(role);
-        if (result.status === 200 && result.data.status === 0){
+        if (result.status === 200 && result.data.status === 0) {
             message.success('更新角色权限成功')
             // 这里记得重新获取
             // this.getRoles();
@@ -144,7 +147,8 @@ class Role extends Component {
         const title = (<span>
             <Button type='primary' onClick={() => this.setState({isShowAdd: true})}>创建角色</Button>
             &nbsp;&nbsp;&nbsp;
-            <Button type='primary' onClick={() => this.setState({isShowAuth: true})} disabled={!role._id}>设置角色权限</Button>
+            <Button type='primary' onClick={() => this.setState({isShowAuth: true})}
+                    disabled={!role._id}>设置角色权限</Button>
         </span>);
 
         return (
@@ -174,7 +178,7 @@ class Role extends Component {
                 <Modal
                     title="设置角色权限"
                     visible={isShowAuth}
-                    onOk={()=>{
+                    onOk={() => {
                         this.updateRole();
                         this.setState({isShowAuth: false});
                     }}
