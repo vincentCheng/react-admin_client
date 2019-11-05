@@ -124,6 +124,10 @@ export const reqImgDelete = name => ajax('/manage/img/delete', {name}, reqType.P
 export const reqAddOrUpdateProduct = product => ajax('/manage/product/' + (product._id ? 'update' : 'add'), product, reqType.POST);
 /**
  * 获取角色列表
- * @param product
  */
 export const reqRoles = () => ajax('/manage/role/list');
+/**
+ * 添加角色
+ * @param roleName
+ */
+export const reqAddRoles = roleName => ajax('/manage/role/add', {roleName}, reqType.POST);

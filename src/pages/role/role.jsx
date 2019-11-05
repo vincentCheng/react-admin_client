@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {Card, Button, Table} from 'antd';
+import {Card, Button, Table, Modal, message} from 'antd';
 import {PAGE_SIZE} from "../../config";
-import {reqRoles} from "../../api";
+import {reqRoles, reqAddRoles} from "../../api";
+import AddForm from "../role/add-form";
 
 class Role extends Component {
     constructor(props) {
@@ -10,6 +11,7 @@ class Role extends Component {
         this.state = {
             roles: [], // 所有角色的列表
             role: {}, // 选中的role
+            isShowAdd: false
         };
     }
 
@@ -57,6 +59,49 @@ class Role extends Component {
         };
     };
 
+    /**
+     * 创建角色
+     */
+    addRole = () => {
+        this.form.validateFields(async (err, values) => {
+            if (err) {
+                message.error(err);
+                return null;
+            }
+            // 收集输入数据
+            const {name} = values;
+
+            // 清除model的缓存
+            this.form.resetFields();
+
+            // 请求添加
+            const result = await reqAddRoles(name);
+
+            // 根据结果提示/更新列表显示
+            if (result.status === 200 && result.data.status === 0) {
+                message.success('创建角色成功')
+                // await this.getRoles(); // 这里不用再获取了
+
+                // let {roles} = this.state; // react 中建议不要这样更新state中的数据
+
+                // 建议使用这种方法
+                // let roles = [...this.state.roles];
+                // roles.push(result.data.data);
+                // this.setState({roles});
+
+                // 最推荐的方法
+                // 基于原本状态更新
+                this.setState(state => ({
+                    roles: [...state.roles, result.data.data]
+                }))
+            }else {
+                message.error('创建角色失败')
+            }
+
+            this.setState({isShowAdd:false});
+        })
+    };
+
     UNSAFE_componentWillMount() {
         this.initColumn();
     }
@@ -66,10 +111,10 @@ class Role extends Component {
     }
 
     render() {
-        const {roles, role} = this.state;
+        const {roles, role, isShowAdd} = this.state;
 
         const title = (<span>
-            <Button type='primary'>创建角色</Button>
+            <Button type='primary' onClick={() => this.setState({isShowAdd: true})}>创建角色</Button>
             &nbsp;&nbsp;&nbsp;
             <Button type='primary' disabled={!role._id}>设置角色权限</Button>
         </span>);
@@ -85,6 +130,18 @@ class Role extends Component {
                     rowSelection={{type: 'radio', selectedRowKeys: [role._id]}}
                     onRow={this.onRow}
                 />
+                <Modal
+                    title="添加角色"
+                    visible={isShowAdd}
+                    onOk={this.addRole}
+                    onCancel={() => {
+                        this.setState({isShowAdd: false});
+                    }}
+                >
+                    <AddForm
+                        setForm={form => this.form = form}
+                    />
+                </Modal>
             </Card>
         );
     }
