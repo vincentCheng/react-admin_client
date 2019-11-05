@@ -3,6 +3,7 @@ import {Card, Button, Table, Modal, message} from 'antd';
 import {PAGE_SIZE} from "../../config";
 import {reqRoles, reqAddRoles} from "../../api";
 import AddForm from "../role/add-form";
+import AuthForm from "../role/auth-form";
 
 class Role extends Component {
     constructor(props) {
@@ -11,7 +12,8 @@ class Role extends Component {
         this.state = {
             roles: [], // 所有角色的列表
             role: {}, // 选中的role
-            isShowAdd: false
+            isShowAdd: false,
+            isShowAuth: false
         };
     }
 
@@ -102,6 +104,12 @@ class Role extends Component {
         })
     };
 
+    /**
+     * 更新角色
+     */
+    updateRole = () => {
+    };
+
     UNSAFE_componentWillMount() {
         this.initColumn();
     }
@@ -111,12 +119,12 @@ class Role extends Component {
     }
 
     render() {
-        const {roles, role, isShowAdd} = this.state;
+        const {roles, role, isShowAdd, isShowAuth} = this.state;
 
         const title = (<span>
             <Button type='primary' onClick={() => this.setState({isShowAdd: true})}>创建角色</Button>
             &nbsp;&nbsp;&nbsp;
-            <Button type='primary' disabled={!role._id}>设置角色权限</Button>
+            <Button type='primary' onClick={() => this.setState({isShowAuth: true})} disabled={!role._id}>设置角色权限</Button>
         </span>);
 
         return (
@@ -136,10 +144,23 @@ class Role extends Component {
                     onOk={this.addRole}
                     onCancel={() => {
                         this.setState({isShowAdd: false});
+                        this.form.resetFields();
                     }}
                 >
                     <AddForm
                         setForm={form => this.form = form}
+                    />
+                </Modal>
+                <Modal
+                    title="设置角色权限"
+                    visible={isShowAuth}
+                    onOk={this.updateRole}
+                    onCancel={() => {
+                        this.setState({isShowAuth: false});
+                    }}
+                >
+                    <AuthForm
+                        role={role}
                     />
                 </Modal>
             </Card>
