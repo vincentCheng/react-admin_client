@@ -43,6 +43,23 @@ class AuthForm extends Component {
         this.treeNodes = this.getTreeNodes(menuConfig);
     }
 
+    /**
+     * 需求：根据新传入的role更新checkedKeys状态。那么使用下面的方法
+     * 功能：会在已挂载的组件接收新的 props 之前被调用
+     *
+     * 如果不这么做，那么打开“设置角色权限界面”，勾选和原来不同的权限，再点击“退出”按钮
+     * 那么再次进入当前界面，会保持上一次勾选的权限。
+     *
+     * 原因：
+     * 1、当前节点并没有从DOM中删除。构造函数只会执行一次。
+     * 2、每次显示当前界面，所有的勾选权限，都是根据上一次state显示的。
+     * 解决方法：
+     * 1、使用下面这个生命周期，每次传入props之前，保持checkedKeys是最新的props，也就是nextProps的数据.
+     */
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        this.setState({checkedKeys: nextProps.role.menus});
+    }
+
     render() {
         const {checkedKeys} = this.state;
         const {role} = this.props;
