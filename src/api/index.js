@@ -59,7 +59,7 @@ export const reqWeather = (city) => {
  * 获取一级（parentId===0）、二级(parentId!==0)分类列表
  * 这个parentId如果是'0'，必须变成数字0否则得不到数据。
  */
-export const reqCategorys = (parentId = 0) => ajax('/manage/category/list', {parentId}, reqType.GET);
+export const reqCategorys = (parentId = 0) => ajax('/manage/category/list', {parentId});
 /**
  * 添加分类
  * @param categoryName
@@ -82,7 +82,7 @@ export const reqUpdateCategory = (categoryName, categoryId) => ajax('/manage/cat
  * 根据_id获取分类名称
  * @param categoryId
  */
-export const reqCategory = categoryId => ajax('/manage/category/info', {categoryId}, reqType.GET);
+export const reqCategory = categoryId => ajax('/manage/category/info', {categoryId});
 /**
  * 获取商品的分页列表
  * @param pageNum 表示哪一页
@@ -91,7 +91,7 @@ export const reqCategory = categoryId => ajax('/manage/category/info', {category
 export const reqProducts = (pageNum = 1, pageSize = 1) => ajax('/manage/product/list', {
     pageSize,
     pageNum
-}, reqType.GET);
+});
 /**
  * 搜索商品分页列表
  * @param pageNum 页码
@@ -103,7 +103,7 @@ export const reqSearchProducts = ({pageNum, pageSize, searchName, searchType}) =
     pageNum,
     pageSize,
     [searchType]: searchName
-}, reqType.GET);
+});
 /**
  * 对商品进行上架/下架处理
  * @param productId
@@ -122,3 +122,8 @@ export const reqImgDelete = name => ajax('/manage/img/delete', {name}, reqType.P
  * @param product
  */
 export const reqAddOrUpdateProduct = product => ajax('/manage/product/' + (product._id ? 'update' : 'add'), product, reqType.POST);
+/**
+ * 获取角色列表
+ * @param product
+ */
+export const reqRoles = () => ajax('/manage/role/list');

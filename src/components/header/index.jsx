@@ -42,6 +42,7 @@ class Index extends Component {
      */
     getTime = () => {
         this.time = setInterval(() => {
+            this.getTitle();
             this.setState({currentTime: formateDate(Date.now())})
         }, 1000)
     };
