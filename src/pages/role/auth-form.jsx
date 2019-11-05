@@ -10,8 +10,8 @@ class AuthForm extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
         this.treeNodes = null;
+        this.state = {checkedKeys: this.props.role.menus};
     }
 
     /**
@@ -32,11 +32,19 @@ class AuthForm extends Component {
         }, []);
     };
 
+    /**
+     * 获取权限列表
+     */
+    getMenus = () => this.state.checkedKeys;
+
+    onCheck = (checkedKeys, info) => this.setState({checkedKeys});
+
     UNSAFE_componentWillMount() {
         this.treeNodes = this.getTreeNodes(menuConfig);
     }
 
     render() {
+        const {checkedKeys} = this.state;
         const {role} = this.props;
         // 指定item布局的宽度比例
         const formItemLayout = {
@@ -49,14 +57,18 @@ class AuthForm extends Component {
                     <Input value={role.name} disabled/>
                 </Item>
 
-                <Tree
-                    checkable
-                    defaultExpandAll={true}
-                >
-                    <TreeNode title="平台权限" key="all">
-                        {this.treeNodes}
-                    </TreeNode>
-                </Tree>
+                <Item label='角色权限'>
+                    <Tree
+                        checkable
+                        defaultExpandAll={true}
+                        checkedKeys={checkedKeys}
+                        onCheck={this.onCheck}
+                    >
+                        <TreeNode title="平台权限" key="all">
+                            {this.treeNodes}
+                        </TreeNode>
+                    </Tree>
+                </Item>
             </Form>
         );
     }

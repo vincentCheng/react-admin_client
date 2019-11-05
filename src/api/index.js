@@ -131,3 +131,15 @@ export const reqRoles = () => ajax('/manage/role/list');
  * @param roleName
  */
 export const reqAddRoles = roleName => ajax('/manage/role/add', {roleName}, reqType.POST);
+/**
+ * 更新角色(给角色设置权限)
+ * @param _id
+ * @param menus
+ * @param auth_name
+ */
+// export const reqUpdateRole = (_id, menus, auth_name) => ajax('/manage/role/update', {
+//     _id,
+//     menus,
+//     auth_name
+// }, reqType.POST);
+export const reqUpdateRole = role => ajax('/manage/role/update', role, reqType.POST);

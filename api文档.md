@@ -722,8 +722,7 @@
   
     |参数		     |是否必选  |类型     |说明
     |_id          |Y       |string   |角色ID
-    |menus        |Y       |array    |权限key数组
-    |auth_time    |Y       |number   |权限时间
+    |menus        |Y       |array    |权限key数组    
     |auth_name    |Y       |string   |权限人姓名
 
 ### 返回示例：

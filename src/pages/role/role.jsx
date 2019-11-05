@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component, createRef} from 'react';
 import {Card, Button, Table, Modal, message} from 'antd';
 import {PAGE_SIZE} from "../../config";
-import {reqRoles, reqAddRoles} from "../../api";
+import {reqRoles, reqAddRoles, reqUpdateRole} from "../../api";
 import AddForm from "../role/add-form";
 import AuthForm from "../role/auth-form";
 
@@ -9,6 +9,7 @@ class Role extends Component {
     constructor(props) {
         super(props);
 
+        this.authForm = createRef();
         this.state = {
             roles: [], // 所有角色的列表
             role: {}, // 选中的role
@@ -107,7 +108,26 @@ class Role extends Component {
     /**
      * 更新角色
      */
-    updateRole = () => {
+    updateRole = async () => {
+        // 这个role已经包含了所有的数据
+        const {role} = this.state;
+        role.menus = this.authForm.current.getMenus();
+        // const auth_name = userOptions.getUser().data.username;
+        // const result = await reqUpdateRole(_id, menus, auth_name);
+        const result = await reqUpdateRole(role);
+        if (result.status === 200 && result.data.status === 0){
+            message.success('更新角色权限成功')
+            // 这里记得重新获取
+            // this.getRoles();
+
+            // 还有另一个方法
+            // 这里虽然更新了roles，但是还是能够更新role，role是roles的浅拷贝。
+            this.setState(state => ({
+                roles: [...state.roles, result.data.data]
+            }))
+        } else {
+            message.error(result.data.msg)
+        }
     };
 
     UNSAFE_componentWillMount() {
@@ -154,13 +174,17 @@ class Role extends Component {
                 <Modal
                     title="设置角色权限"
                     visible={isShowAuth}
-                    onOk={this.updateRole}
+                    onOk={()=>{
+                        this.updateRole();
+                        this.setState({isShowAuth: false});
+                    }}
                     onCancel={() => {
                         this.setState({isShowAuth: false});
                     }}
                 >
                     <AuthForm
                         role={role}
+                        ref={this.authForm}
                     />
                 </Modal>
             </Card>

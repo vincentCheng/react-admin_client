@@ -9,6 +9,11 @@ import memoryUtils from "./memoryUtils";
 // let userInfo = memoryUtils.user;
 // const memoryUtils = {user:null}; // 这里真的很奇怪，这样写就会出错。换成import引入，就不会。
 export const userOptions = {
+    /**
+     * 获取用户名字
+     * let username = getUser().data.username
+     * @return {null}
+     */
     getUser() {
         /**
          * 为什么这里会不断的被解析?
