@@ -10,10 +10,10 @@ import {message} from "antd";
 export const reqLogin = (username, password) => ajax('/login', {username, password}, reqType.POST);
 
 /**
- * 添加用户
+ * 添加/更新用户
  * user = {username, password, phone = '', email = '', role_id = ''}
  */
-export const reqAddUser = user => ajax('/manage/user/add', {...user}, reqType.POST);
+export const reqAddOrUpdateUser = user => ajax('/manage/user/' + (user._id ? 'update' : 'add'), {...user}, reqType.POST);
 
 /**
  * 获取所有用户列表

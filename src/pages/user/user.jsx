@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Card, Button, Table, Modal, message} from 'antd';
 import {LinkButton} from "../../components/link-button";
 import {formateDate} from "../../utils/dateUtils";
-import {reqUsers, reqUserDelete, reqAddUser} from "../../api";
+import {reqUsers, reqUserDelete, reqAddOrUpdateUser} from "../../api";
 import {PAGE_SIZE} from "../../config";
 import AddForm from "./add-form";
 
@@ -11,7 +11,7 @@ class User extends Component {
     constructor(props) {
         super(props)
 
-        this.updateUser = false;
+        this.user = null; // 保存用来修改的
 
         this.state = {
             users: [],
@@ -53,9 +53,12 @@ class User extends Component {
             },
             {
                 title: '操作',
-                render: (user) => (
+                render: user => (
                     <span>
-                        <LinkButton>修改</LinkButton>
+                        <LinkButton onClick={() => {
+                            this.user = user;
+                            this.setState({isShow: true});
+                        }}>修改</LinkButton>
                         <LinkButton onClick={() => this.deleteUser(user)}>删除</LinkButton>
                     </span>
                 )
@@ -117,36 +120,33 @@ class User extends Component {
      */
     addOrUpdateUser = async () => {
         const user = this.form.getFieldsValue();
+        // 如果是修改
+        if (this.user && this.user._id) user._id = this.user._id;
+        const result = await reqAddOrUpdateUser(user);
 
-        if(!this.updateUser){ // 如果不是更新用户，是添加用户
-            const result = await reqAddUser(user);
-
-            if (result.status === 200 && result.data.status === 0) {
-                message.success('添加用户成功');
-                this.form.resetFields();
-                this.setState({isShow:false});
-            }else {
-                console.log(result);
-                message.error(result.data.msg);
-            }
-
-            return null;
+        if (result.status === 200 && result.data.status === 0) {
+            message.success(this._id ? '修改' : '添加' + '用户成功');
+            this.setState({isShow: false});
+            this.form.resetFields();
+            this.user = null;
+            this.getUsers();
+        } else {
+            message.error(result.data.msg);
         }
-
-        // 如果是更新用户
     };
 
     /*
     响应点击取消: 隐藏确定框
      */
     handleCancel = () => {
-        // 清除输入数据
-        this.form.resetFields();
         // 隐藏确认框
         this.setState({
             isShow: false
-        })
-    }
+        });
+        this.user = null;
+        // 清除输入数据
+        this.form.resetFields();
+    };
 
     UNSAFE_componentWillMount() {
         this.initColumns();
@@ -173,12 +173,12 @@ class User extends Component {
                 />
 
                 <Modal
-                    title="添加用户"
+                    title={this.user ? '修改用户' : '添加用户'}
                     visible={isShow}
                     onOk={this.addOrUpdateUser}
                     onCancel={this.handleCancel}
                 >
-                    <AddForm user={{}} roles={roles} setForm={(form, updateFlag) => {this.form = form; this.updateUser = updateFlag}}/>
+                    <AddForm user={this.user} roles={roles} setForm={(form) => this.form = form}/>
                 </Modal>
             </Card>
         );
