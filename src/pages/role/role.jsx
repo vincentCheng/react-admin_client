@@ -142,6 +142,7 @@ class Role extends Component {
     }
 
     render() {
+        console.log('role');
         const {roles, role, isShowAdd, isShowAuth} = this.state;
 
         const title = (<span>

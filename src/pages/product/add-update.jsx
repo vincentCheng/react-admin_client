@@ -1,4 +1,4 @@
-import React, {Component, createRef} from 'react';
+import React, {PureComponent, createRef} from 'react';
 import {Card, Form, Input, Cascader, Button, Icon, message} from "antd";
 import {LinkButton} from "../../components/link-button";
 import {reqCategorys, reqAddOrUpdateProduct} from "../../api";
@@ -8,7 +8,7 @@ import RichTextEditor from "./rich-text-editor";
 const {Item} = Form;
 const {TextArea} = Input;
 
-class ProductAddUpdate extends Component {
+class ProductAddUpdate extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -61,6 +61,13 @@ class ProductAddUpdate extends Component {
             targetOption.isLeaf = true;
         }
 
+        // 如果是这样，那么使用 PureComponent 是不会更新的。
+        // 但是实际上再点击一次就能够显示 商品分类 界面了。
+        // this.setState({options: this.state.options});
+
+        // 使用这样，才会让 PureComponent 更新。因为值的地址已经发生改变了。
+        // 如果使用状态对象修改状态，那么需要使用三点运算符生成新的值。
+        // 否则不会渲染。
         this.setState({options: [...this.state.options]});
     };
 

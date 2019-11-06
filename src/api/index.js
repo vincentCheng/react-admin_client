@@ -20,6 +20,11 @@ export const reqAddUser = (username, password, phone = '', email = '', role_id =
     role_id
 }, reqType.POST);
 
+/**
+ * 获取所有用户列表
+ */
+export const reqUsers = () => ajax('/manage/user/list');
+
 /*
 * jsonp请求的接口函数
 * 不能使用ajax

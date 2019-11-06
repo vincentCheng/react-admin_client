@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {Form, Input, Tree} from "antd";
 import {menuConfig} from "../../config/menuConfig";
@@ -6,7 +6,7 @@ import {menuConfig} from "../../config/menuConfig";
 const Item = Form.Item;
 const {TreeNode} = Tree;
 
-class AuthForm extends Component {
+class AuthForm extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -61,6 +61,7 @@ class AuthForm extends Component {
     }
 
     render() {
+        console.log('auth-form');
         const {checkedKeys} = this.state;
         const {role} = this.props;
         // 指定item布局的宽度比例
