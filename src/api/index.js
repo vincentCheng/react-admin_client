@@ -11,14 +11,9 @@ export const reqLogin = (username, password) => ajax('/login', {username, passwo
 
 /**
  * 添加用户
+ * user = {username, password, phone = '', email = '', role_id = ''}
  */
-export const reqAddUser = (username, password, phone = '', email = '', role_id = '') => ajax('/manage/user/add', {
-    username,
-    password,
-    phone,
-    email,
-    role_id
-}, reqType.POST);
+export const reqAddUser = user => ajax('/manage/user/add', {...user}, reqType.POST);
 
 /**
  * 获取所有用户列表

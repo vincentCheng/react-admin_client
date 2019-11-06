@@ -2,20 +2,23 @@ import React, {Component} from 'react';
 import {Card, Button, Table, Modal, message} from 'antd';
 import {LinkButton} from "../../components/link-button";
 import {formateDate} from "../../utils/dateUtils";
-import {reqUsers, reqUserDelete} from "../../api";
+import {reqUsers, reqUserDelete, reqAddUser} from "../../api";
 import {PAGE_SIZE} from "../../config";
+import AddForm from "./add-form";
 
 class User extends Component {
 
     constructor(props) {
         super(props)
 
+        this.updateUser = false;
+
         this.state = {
             users: [],
             roles: [],
             roleNames: [],
             loading: false,
-            isShow: false
+            isShow: false,
         }
     }
 
@@ -112,8 +115,25 @@ class User extends Component {
     /**
      * 添加用户
      */
-    addOrUpdateUser = () => {
+    addOrUpdateUser = async () => {
+        const user = this.form.getFieldsValue();
 
+        if(!this.updateUser){ // 如果不是更新用户，是添加用户
+            const result = await reqAddUser(user);
+
+            if (result.status === 200 && result.data.status === 0) {
+                message.success('添加用户成功');
+                this.form.resetFields();
+                this.setState({isShow:false});
+            }else {
+                console.log(result);
+                message.error(result.data.msg);
+            }
+
+            return null;
+        }
+
+        // 如果是更新用户
     };
 
     /*
@@ -121,7 +141,7 @@ class User extends Component {
      */
     handleCancel = () => {
         // 清除输入数据
-        // this.form.resetFields()
+        this.form.resetFields();
         // 隐藏确认框
         this.setState({
             isShow: false
@@ -137,9 +157,9 @@ class User extends Component {
     }
 
     render() {
-        const {users, loading, isShow} = this.state;
+        const {users, roles, loading, isShow} = this.state;
 
-        const title = <Button type='primary'>创建用户</Button>
+        const title = <Button type='primary' onClick={() => this.setState({isShow: true})}>添加用户</Button>
 
         return (
             <Card title={title}>
@@ -158,7 +178,7 @@ class User extends Component {
                     onOk={this.addOrUpdateUser}
                     onCancel={this.handleCancel}
                 >
-                    添加/更新界面
+                    <AddForm user={{}} roles={roles} setForm={(form, updateFlag) => {this.form = form; this.updateUser = updateFlag}}/>
                 </Modal>
             </Card>
         );
