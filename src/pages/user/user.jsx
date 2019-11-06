@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Card, Button, Table, Modal, message} from 'antd';
 import {LinkButton} from "../../components/link-button";
 import {formateDate} from "../../utils/dateUtils";
-import {reqUsers} from "../../api";
+import {reqUsers, reqUserDelete} from "../../api";
 import {PAGE_SIZE} from "../../config";
 
 class User extends Component {
@@ -53,7 +53,7 @@ class User extends Component {
                 render: (user) => (
                     <span>
                         <LinkButton>修改</LinkButton>
-                        <LinkButton>删除</LinkButton>
+                        <LinkButton onClick={() => this.deleteUser(user)}>删除</LinkButton>
                     </span>
                 )
             },
@@ -74,6 +74,28 @@ class User extends Component {
         } else {
             message.error(result.data.msg);
         }
+    };
+
+    deleteUser = user => {
+        Modal.confirm(
+            {
+                title: `删除用户${user.username}吗?`,
+                okText: '确定',
+                okType: 'danger',
+                okButtonProps: {
+                    disabled: false,
+                },
+                cancelText: '取消',
+                onOk: async () => {
+                    const result = await reqUserDelete(user._id)
+                    if (result.status === 200 && result.data.status === 0) {
+                        message.success('删除成功')
+                        this.getUsers();
+                    }
+                    else message.error('删除失败')
+                },
+            }
+        )
     };
 
     /**

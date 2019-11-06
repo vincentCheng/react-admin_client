@@ -25,6 +25,11 @@ export const reqAddUser = (username, password, phone = '', email = '', role_id =
  */
 export const reqUsers = () => ajax('/manage/user/list');
 
+/**
+ * 删除用户
+ */
+export const reqUserDelete = userId => ajax('/manage/user/delete', {userId}, reqType.POST);
+
 /*
 * jsonp请求的接口函数
 * 不能使用ajax
