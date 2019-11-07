@@ -61,7 +61,7 @@ class AuthForm extends PureComponent {
     }
 
     render() {
-        console.log('auth-form');
+        // console.log('auth-form');
         const {checkedKeys} = this.state;
         const {role} = this.props;
         // 指定item布局的宽度比例

@@ -11,7 +11,28 @@ const {SubMenu} = Menu;
 class Index extends Component {
 
     /**
+     * 权限验证
+     */
+    hasAuth = item => {
+        const {data} = userOptions.getUser();
+        const {menus} = data.role;
+        const {username} = data;
+
+        /*
+        * 1、如果是admin
+        * 2、如果是公开项
+        * 3、如果当前项的key在menus中存在
+        * 4、如果有children，并且children中的key在menus中，那么当前项就有权限。
+        * */
+        return ('admin' === username)
+            || (item.isPublic)
+            || (menus.indexOf(item.key) >= 0)
+            || (item.children && (item.children.find(child => menus.indexOf(child.key) >= 0)));
+    };
+
+    /**
      * 根据当前账号的角色权限，过滤menuConfig
+     * 这个方法作废
      */
     initMenuConfig = menuConfig => {
         const {data} = userOptions.getUser();
@@ -28,8 +49,12 @@ class Index extends Component {
                 }
             }
             else {
-                if (menus.find(menu => menu === item.key)) pre.push(item)
+                // 如果没有child，如果是公开页，并且不能和menus中的重名。比如“/home”
+                // 或者menus中有这个页面。
+                if ((item.isPublic && menus.indexOf(item.key) === -1)
+                    || menus.find(menu => menu === item.key)) pre.push(item)
             }
+
             return pre;
         }, []);
     };
@@ -85,34 +110,38 @@ class Index extends Component {
 
         return menuList.reduce((pre, item) => {
             if (!item.children) {
-                pre.push((
-                    <Menu.Item key={item.key}>
-                        <Link to={item.key}>
-                            <Icon type={item.icon}/>
-                            <span>{item.title}</span>
-                        </Link>
-                    </Menu.Item>
-                ))
-            }
-            else {
-                let cItem = item.children.find(e => e.key === path);
-                if (cItem) {
-                    this.openKey = item.key;
+                if (this.hasAuth(item)) {
+                    pre.push((
+                        <Menu.Item key={item.key}>
+                            <Link to={item.key}>
+                                <Icon type={item.icon}/>
+                                <span>{item.title}</span>
+                            </Link>
+                        </Menu.Item>
+                    ))
                 }
+            }
+            else { // 如果有children，那么递归遍历
+                if(this.hasAuth(item)){
+                    let cItem = item.children.find(e => e.key === path);
+                    if (cItem) {
+                        this.openKey = item.key;
+                    }
 
-                pre.push((
-                    <SubMenu
-                        key={item.key}
-                        title={
-                            <span>
+                    pre.push((
+                        <SubMenu
+                            key={item.key}
+                            title={
+                                <span>
 								<Icon type={item.icon}/>
 								<span>{item.title}</span>
 							</span>
-                        }
-                    >
-                        {this.getMenuNodes_reduce(item.children)}
-                    </SubMenu>
-                ))
+                            }
+                        >
+                            {this.getMenuNodes_reduce(item.children)}
+                        </SubMenu>
+                    ))
+                }
             }
             return pre;
         }, [])
@@ -123,19 +152,18 @@ class Index extends Component {
      * 为第一个render()同步准备数据
      */
     UNSAFE_componentWillMount() {
-        // componentDidMount() {
-        const {username} = userOptions.getUser().data;
+        this.menuNodes = this.getMenuNodes_reduce(menuConfig);
 
-        // this.menuNodes = this.getMenuNodes_reduce(menuConfig);
-
-        if ('admin' === username) {
-            this.menuNodes = this.getMenuNodes_reduce(menuConfig);
-        }
-        else {
-            const tempMenuConfig = this.initMenuConfig(menuConfig);
-            // 在这里先计算，并且记录要打开的子选项
-            this.menuNodes = this.getMenuNodes_reduce(tempMenuConfig);
-        }
+        // const {username} = userOptions.getUser().data;
+        //
+        // if ('admin' === username) {
+        //     this.menuNodes = this.getMenuNodes_reduce(menuConfig);
+        // }
+        // else {
+        //     const tempMenuConfig = this.initMenuConfig(menuConfig);
+        //     // 在这里先计算，并且记录要打开的子选项
+        //     this.menuNodes = this.getMenuNodes_reduce(tempMenuConfig);
+        // }
     }
 
     render() {

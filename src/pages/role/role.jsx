@@ -5,6 +5,7 @@ import {reqRoles, reqAddRoles, reqUpdateRole} from "../../api";
 import AddForm from "../role/add-form";
 import AuthForm from "../role/auth-form";
 import {formateDate} from "../../utils/dateUtils";
+import {userOptions} from "../../utils/storageUtils";
 
 class Role extends Component {
     constructor(props) {
@@ -115,19 +116,27 @@ class Role extends Component {
         // 这个role已经包含了所有的数据
         const {role} = this.state;
         role.menus = this.authForm.current.getMenus();
-        // const auth_name = userOptions.getUser().data.username;
-        // const result = await reqUpdateRole(_id, menus, auth_name);
-        const result = await reqUpdateRole(role);
-        if (result.status === 200 && result.data.status === 0) {
-            message.success('更新角色权限成功')
-            // 这里记得重新获取
-            // this.getRoles();
 
-            // 还有另一个方法
-            // 这里虽然更新了roles，但是还是能够更新role，role是roles的浅拷贝。
-            this.setState(state => ({
-                roles: [...state.roles, result.data.data]
-            }))
+        const result = await reqUpdateRole(role);
+
+        if (result.status === 200 && result.data.status === 0) {
+            console.log(userOptions.getUser());
+
+            // 如果当前更新的是自己角色的权限，强制退出
+            if (role._id === userOptions.getUser().data.role_id) {
+                userOptions.removeUser();
+                this.props.history.replace('login');
+            } else {
+                message.success('更新角色权限成功')
+                // 这里记得重新获取
+                // this.getRoles();
+
+                // 还有另一个方法
+                // 这里虽然更新了roles，但是还是能够更新role，role是roles的浅拷贝。
+                this.setState(state => ({
+                    roles: [...state.roles, result.data.data]
+                }))
+            }
         } else {
             message.error(result.data.msg)
         }

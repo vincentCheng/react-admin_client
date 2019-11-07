@@ -2,7 +2,8 @@ export const menuConfig = [
     {
         title:'首页',
         key:'/home',// key同时也是link的地址值
-        icon:'home'
+        icon:'home',
+        isPublic: true // 公开的页面
     },
     {
         title:'商品',
