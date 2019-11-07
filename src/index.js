@@ -1,12 +1,18 @@
+/*
+* 入口js
+* */
+
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import ReactDOM from "react-dom";
+// import 'antd/dist/antd.min.css';// 这里引入ant的样式
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App from "./App";
+// import { userOptions } from "./utils/storageUtils";
+// import memoryUtils from "./utils/memoryUtils";
+//
+// // 读取 store 中保存的user，再保存到内存中。
+// const user = userOptions.getUser();
+// memoryUtils.user = user;
+// console.log('入口函数', memoryUtils);
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(<App />, document.getElementById('root'))
