@@ -120,8 +120,6 @@ class Role extends Component {
         const result = await reqUpdateRole(role);
 
         if (result.status === 200 && result.data.status === 0) {
-            console.log(userOptions.getUser());
-
             // 如果当前更新的是自己角色的权限，强制退出
             if (role._id === userOptions.getUser().data.role_id) {
                 userOptions.removeUser();
@@ -168,7 +166,11 @@ class Role extends Component {
                     dataSource={roles}
                     columns={this.columns}
                     pagination={{defaultPageSize: PAGE_SIZE}}
-                    rowSelection={{type: 'radio', selectedRowKeys: [role._id]}}
+                    rowSelection={{
+                        type: 'radio',
+                        selectedRowKeys: [role._id],
+                        onSelect: role => this.setState({role})
+                    }}
                     onRow={this.onRow}
                 />
                 <Modal

@@ -56,7 +56,8 @@ class ProductHome extends Component {
                     <span>
                         <LinkButton onClick={() => this.props.history.push('/product/detail', product)}>详情</LinkButton>
                         {/*两种不同的传参方法，都试试*/}
-                        <LinkButton onClick={() => this.props.history.push('/product/add-update', product)}>修改</LinkButton>
+                        <LinkButton
+                            onClick={() => this.props.history.push('/product/add-update', product)}>修改</LinkButton>
                     </span>
                 )
             },
@@ -125,11 +126,15 @@ class ProductHome extends Component {
                 </Select>
                 <Input placeholder='关键字' style={{width: 100, margin: '0 15px'}} value={searchName}
                        onChange={e => this.setState({searchName: e.target.value})}/>
-                <Button type='primary' onClick={() => {this.getProducts()}}>搜索</Button>
+                <Button type='primary' onClick={() => {
+                    this.getProducts()
+                }}>搜索</Button>
             </div>
         )
         const extra = (
-            <Button type='primary' onClick={()=>{this.props.history.push('/product/add-update')}}>
+            <Button type='primary' onClick={() => {
+                this.props.history.push('/product/add-update')
+            }}>
                 <Icon type='plus'/>
                 添加商品
             </Button>
@@ -142,7 +147,13 @@ class ProductHome extends Component {
                     rowKey='_id'
                     dataSource={products}
                     columns={this.columns}
-                    pagination={{defaultPageSize: PAGE_SIZE, showQuickJumper: true, total, onChange: this.getProducts}}
+                    pagination={{
+                        current: this.pageNum, // 搜索的时候会重置 this.pageNum
+                        defaultPageSize: PAGE_SIZE,
+                        showQuickJumper: true,
+                        total,
+                        onChange: this.getProducts
+                    }}
                 />
             </Card>
         );
