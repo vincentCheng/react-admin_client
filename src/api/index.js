@@ -50,8 +50,8 @@ export const reqWeather = (city) => {
         jsonp(url, {}, (err, data) => {
             // console.log('jsonp()', err, data);
             if (!err && data.status === 'success') {
-                let {currentCity, weather_data} = data.results[0];
-                let {date, dayPictureUrl, weather} = weather_data[0];
+                let {weather_data} = data.results[0];
+                let {dayPictureUrl, weather} = weather_data[0];
                 resolve({dayPictureUrl, weather});
             } else {
                 // console.log('失败了');s

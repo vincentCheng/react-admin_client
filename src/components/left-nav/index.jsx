@@ -4,10 +4,36 @@ import './index.less';
 import {Link, withRouter} from "react-router-dom";
 import {Menu, Icon} from 'antd';
 import {menuConfig} from "../../config/menuConfig";
+import {userOptions} from "../../utils/storageUtils";
 
 const {SubMenu} = Menu;
 
 class Index extends Component {
+
+    /**
+     * 根据当前账号的角色权限，过滤menuConfig
+     */
+    initMenuConfig = menuConfig => {
+        const {data} = userOptions.getUser();
+        const {menus} = data.role;
+        return menuConfig.reduce((pre, item) => {
+            if (item.children) {
+                let result = this.initMenuConfig(item.children);
+                if (result.length > 0) { // 如果当前child有需要的项
+                    // 连父类一起写入
+                    // 注意这里一定要“深拷贝”
+                    let tempItem = JSON.parse(JSON.stringify(item));
+                    tempItem.children = result;
+                    pre.push(tempItem);
+                }
+            }
+            else {
+                if (menus.find(menu => menu === item.key)) pre.push(item)
+            }
+            return pre;
+        }, []);
+    };
+
     /**
      * 根据menu的数据生成对应的标签
      *
@@ -97,8 +123,19 @@ class Index extends Component {
      * 为第一个render()同步准备数据
      */
     UNSAFE_componentWillMount() {
-        // 在这里先计算，并且记录要打开的子选项
-        this.menuNodes = this.getMenuNodes_reduce(menuConfig)
+        // componentDidMount() {
+        const {username} = userOptions.getUser().data;
+
+        // this.menuNodes = this.getMenuNodes_reduce(menuConfig);
+
+        if ('admin' === username) {
+            this.menuNodes = this.getMenuNodes_reduce(menuConfig);
+        }
+        else {
+            const tempMenuConfig = this.initMenuConfig(menuConfig);
+            // 在这里先计算，并且记录要打开的子选项
+            this.menuNodes = this.getMenuNodes_reduce(tempMenuConfig);
+        }
     }
 
     render() {

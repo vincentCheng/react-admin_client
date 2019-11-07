@@ -125,7 +125,7 @@ class User extends Component {
         const result = await reqAddOrUpdateUser(user);
 
         if (result.status === 200 && result.data.status === 0) {
-            message.success(this._id ? '修改' : '添加' + '用户成功');
+            message.success((this._id ? '修改' : '添加') + '用户成功');
             this.setState({isShow: false});
             this.form.resetFields();
             this.user = null;

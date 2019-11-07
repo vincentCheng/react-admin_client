@@ -80,8 +80,6 @@ class ProductAddUpdate extends PureComponent {
 
             if (!error) {
                 // 1 收集数据封装成product对象。结构中的数据来自于 getFieldDecorator('categoryIds', {}) 等。
-                let _id;
-                if (this.isUpdate) _id = this.product._id; // 表示更新商品
 
                 const {name, desc, price, categoryIds} = values;
                 let pCategoryId, categoryId;

@@ -221,7 +221,7 @@ export default class Category extends Component {
     /*
     为第一次render()准备数据
      */
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.initColumns()
     }
 
