@@ -104,7 +104,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-    state => ({count: state}), // redux管理的state数据映射成为UI组件的一般属性
+    state => ({count: state.count}), // 这里的state是reduer返回的总的对象： {count, user}
     // 映射函数属性 在 this.props.increment 中使用
     // 最终还是会生成mapDispatchToProps中的语法：
     // mapDispatchToProps,
