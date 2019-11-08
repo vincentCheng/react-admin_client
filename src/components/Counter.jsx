@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
-import {increment, decrement} from "../redux/actions";
+import {increment, decrement, incrementAsync} from "../redux/actions";
 
 /**
  * 这里叫做UI组件，显示数据。
@@ -23,6 +23,7 @@ class Counter extends Component {
         count: PropTypes.number.isRequired,
         increment: PropTypes.func.isRequired,
         decrement: PropTypes.func.isRequired,
+        incrementAsync: PropTypes.func.isRequired,
     };
 
     /**
@@ -63,10 +64,11 @@ class Counter extends Component {
      */
     incrementAsync = () => {
         let number = this.numberRef.current.value * 1;
-        setTimeout(() => {
-            this.props.increment(number);
-            // this.setState(state => ({count: state.count + number}));
-        }, 1000)
+        this.props.incrementAsync(number);
+        // setTimeout(() => {
+        //     this.props.increment(number);
+        //     // this.setState(state => ({count: state.count + number}));
+        // }, 1000)
     };
 
     render() {
@@ -106,5 +108,5 @@ export default connect(
     // 映射函数属性 在 this.props.increment 中使用
     // 最终还是会生成mapDispatchToProps中的语法：
     // mapDispatchToProps,
-    {increment, decrement} // 这是简化的写法
+    {increment, decrement, incrementAsync} // 这是简化的写法
 )(Counter);
