@@ -1,6 +1,6 @@
+/*根组件*/
+
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import {increment, decrement} from "./redux/actions";
 
 class App extends Component {
 
@@ -10,18 +10,16 @@ class App extends Component {
         this.numberRef = React.createRef();
     }
 
-    static propTypes = {
-        store: PropTypes.object.isRequired
-    };
+    // state = {
+    //     count: 0
+    // };
 
     /**
      *
      */
     increment = () => {
         let number = this.numberRef.current.value * 1;
-        this.props.store.dispatch(increment(number))
-        // this.setState(state => ({count: state.count + number}));
-        // this.props.store.dispatch({type: 'INCREMENT', data: number})
+        this.setState(state => ({count: state.count + number}));
     };
 
     /**
@@ -29,9 +27,7 @@ class App extends Component {
      */
     decrement = () => {
         let number = this.numberRef.current.value * 1;
-        this.props.store.dispatch(increment(number))
-        // this.setState(state => ({count: state.count - number}));
-        // this.props.store.dispatch({type: 'DECREMENT', data: number})
+        this.setState(state => ({count: state.count - number}));
     };
 
     /**
@@ -39,8 +35,7 @@ class App extends Component {
      */
     incrementIfOdd = () => {
         let number = this.numberRef.current.value * 1;
-        if (this.props.store.getState().count % 2 === 1) this.setState(state => ({count: state.count + number}));
-        // if (this.state.count % 2 === 1) this.setState(state => ({count: state.count + number}));
+        if (this.state.count % 2 === 1) this.setState(state => ({count: state.count + number}));
     };
 
     /**
@@ -48,13 +43,13 @@ class App extends Component {
      */
     incrementAsync = () => {
         let number = this.numberRef.current.value * 1;
-        setTimeout(() => {
+        setTimeout(()=>{
             this.setState(state => ({count: state.count + number}));
         }, 1000)
     };
 
     render() {
-        const count = this.props.store.getState();
+        const count = this.state.count;
 
         return (
             <div>
