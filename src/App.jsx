@@ -29,7 +29,7 @@ class App extends Component {
      */
     decrement = () => {
         let number = this.numberRef.current.value * 1;
-        this.props.store.dispatch(increment(number))
+        this.props.store.dispatch(decrement(number))
         // this.setState(state => ({count: state.count - number}));
         // this.props.store.dispatch({type: 'DECREMENT', data: number})
     };
