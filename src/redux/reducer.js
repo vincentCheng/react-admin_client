@@ -7,7 +7,7 @@ import {INCREMENT, DECREMENT} from "./action-types";
 /**
  * 管理状态：count
  */
-export const count = (state = 1, action) => {
+export default (state = 1, action) => {
     let result;
 
     // console.log('count()', state, action);

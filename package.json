@@ -150,5 +150,8 @@
       "react-app"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8"
+  }
 }
