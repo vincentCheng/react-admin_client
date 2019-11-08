@@ -10,7 +10,7 @@ import {INCREMENT, DECREMENT} from "./action-types";
 export const count = (state = 1, action) => {
     let result;
 
-    // console.log('count()', state, action);
+    console.log('count()', state, action);
 
     switch (action.type) {
         case INCREMENT:
