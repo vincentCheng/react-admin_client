@@ -61,8 +61,12 @@ class Login extends Component {
                      * 所有的组件都有history
                      * 跳转到管理界面，不需要回退到登录界面。
                      * 回退用push（这里不用），现在是在栈中的最后一个变为主界面，就是'replace'
+                     *
+                     * 使用redux之后：
+                     * 1、这里如果不换成'/home'，那么标题有可能不会变成“首页”；
                      * */
                     this.props.history.replace('/');
+                    // this.props.history.replace('/home');
                 }
 
                 // try {
