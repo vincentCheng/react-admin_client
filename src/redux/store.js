@@ -1,15 +1,6 @@
-/*
-* 最核心的管理对象 store
-* */
+import {createStore} from "../lib/redux";
+// import {createStore} from "redux";
+import {count} from "./reducer";
 
-import {createStore, applyMiddleware, compose} from "redux";
-import thunk from "redux-thunk";
-
-import reducer from "./reducer";
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-export default createStore(
-    reducer,
-    composeEnhancers(applyMiddleware(thunk))
-);
+// 创建store对象，第一次调用reducer，得到初始状态值(state为1)。
+export default createStore(count);
