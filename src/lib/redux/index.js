@@ -17,7 +17,8 @@
  * @param reducer
  * @return {{getState: getState, dispatch: dispatch, subscribe: subscribe}}
  */
-export const createStore = reducer => {
+const createStore = reducer => {
+// export const createStore = reducer => {
 
     // 存储内部状态数据的变量，初始值为调用reducer函数返回的结果。
     let state = reducer(undefined, {type: '@@redux/init'});
@@ -39,7 +40,7 @@ export const createStore = reducer => {
         // 保存新的state
         state = newState;
         // 调用所有已经存在的监视回调函数
-        listeners.forEach(listener=>listener());
+        listeners.forEach(listener => listener());
     };
 
     /**
@@ -62,12 +63,22 @@ export const createStore = reducer => {
 /**
  * 接收包含多个reducer方法的“对象”，返回一个新的reducer“函数”
  * 新的reducer管理的总状态：{r1:state1, r2:state2}
+ *
+ * 就是返回一个对象，这个对象包含reducer.js中对外暴露的函数执行后的值+属性。
+ * 这个对象叫做新的状态。
  * @param reducers
  * @return {Function}
  */
 export const combineReducers = reducers => {
 
-    return (state, action) => {
+    // 执行reducers中每个reducer函数，得到一个新的子状态，并且封装一个对象容器。
 
-    };
+    return (state = {}, action) => {
+        const newState = Object.keys(reducers).reduce((preState, key) => {
+            preState[key] = reducers[key](state[key], action);
+            return preState;
+        }, {});
+
+        return newState;
+    }
 };
