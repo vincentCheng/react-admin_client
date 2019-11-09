@@ -17,7 +17,7 @@
  * @param reducer
  * @return {{getState: getState, dispatch: dispatch, subscribe: subscribe}}
  */
-const createStore = reducer => {
+export const createStore = reducer => {
 // export const createStore = reducer => {
 
     // 存储内部状态数据的变量，初始值为调用reducer函数返回的结果。

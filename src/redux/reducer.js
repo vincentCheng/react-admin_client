@@ -3,13 +3,14 @@
 * */
 
 import {INCREMENT, DECREMENT} from "./action-types";
-import {combineReducers} from "redux";
+// import {combineReducers} from "redux";
+import {combineReducers} from "../lib/redux";
 
 /**
  * 管理状态：count
  */
-export const count = (state = 1, action) => {
-// const count = (state = 1, action) => {
+// export const count = (state = 1, action) => {
+const count = (state = 1, action) => {
     let result;
 
     console.log('count()', state, action);
@@ -44,7 +45,7 @@ const user = (state = {}, action) => {
  * 总的状态：
  * {count:1,user:{}}
  */
- combineReducers({
+ export default combineReducers ({
     count,
     user
 });

@@ -19,7 +19,8 @@ class App extends Component {
      */
     increment = () => {
         let number = this.numberRef.current.value * 1;
-        this.props.store.dispatch(increment(number))
+        this.props.store.dispatch(increment(number));
+        // console.log('user', this.props.store.getState().user);
         // this.setState(state => ({count: state.count + number}));
         // this.props.store.dispatch({type: 'INCREMENT', data: number})
     };
@@ -54,7 +55,9 @@ class App extends Component {
     };
 
     render() {
-        const count = this.props.store.getState();
+
+        // 这时候得到的state已经是一个对象了 {count, user}
+        const count = this.props.store.getState().count;
 
         return (
             <div>
