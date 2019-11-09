@@ -1,5 +1,3 @@
-/*
-* 包含n个action type常量模块
-* */
-export const INCREMENT = 'increment';
-export const DECREMENT = 'decrement';
+/**
+ * 包含多个action的type常量标识名称
+ * */

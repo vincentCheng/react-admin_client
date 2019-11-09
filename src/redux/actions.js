@@ -1,28 +1,5 @@
 /*
-* 包含n个用来创建action的工厂函数（action creator）
+* 包含多个action creator函数的模块
+* 同步action：返回对象{type:'xxx', data:数据值}
+* 异步action：返回函数dispatch => {}
 * */
-
-import {INCREMENT, DECREMENT} from "./action-types";
-
-/**
- * 增加
- */
-export const increment = number => ({type: INCREMENT, data: number});
-
-/**
- * 减少
- */
-export const decrement = number => ({type: DECREMENT, data: number});
-
-/**
- * 异步增加，返回的是函数
- */
-export const incrementAsync = number => {
-    return dispatch => {
-        // 执行异步（定时器，ajax请求，promise）
-        setTimeout(() => {
-            // 执行完成，分发一个同步action
-            dispatch(increment(number))
-        }, 1000)
-    }
-};
