@@ -4,7 +4,11 @@
 import {combineReducers} from "redux";
 
 import {userOptions} from "../utils/storageUtils";
-import {SET_HEAD_TITLE} from "./action-types";
+import {
+    SET_HEAD_TITLE,
+    RECEIVE_USER,
+    SHOW_ERROR_MSG
+} from "./action-types";
 
 /**
  * 管理头部标题的reducer函数
@@ -26,6 +30,12 @@ const headTitle = (state = initHeadTitle, action) => {
 const initUser = userOptions.getUser();
 const user = (state = initUser, action) => {
     switch (action.type) {
+        case RECEIVE_USER:
+            return action.user;
+        case SHOW_ERROR_MSG:
+            const errorMsg = action.errorMsg;
+            // state.errorMsg = errorMsg; // 不能这样做，不能修改原来的数据。
+            return {...state, errorMsg}; // 必须这样做
         default:
             return state;
     }

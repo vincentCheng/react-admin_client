@@ -76,11 +76,6 @@ class Index extends Component {
         });
     };
 
-    UNSAFE_componentWillMount() {
-        let user = userOptions.getUser();
-        this.username = user.data.username;
-    }
-
     /*
     * 第一次render之后执行一次
     * 一般执行异步操作
@@ -101,14 +96,12 @@ class Index extends Component {
 
     render() {
         const {currentTime, dayPictureUrl, weather} = this.state;
-        // let user = userOptions.getUser();
-        // console.log('header', user);
-        // const username = user.
+        const {username} = userOptions.getUser().data;
 
         return (
             <div className='header'>
                 <div className='header-top'>
-                    <span>欢迎 {this.username}</span>
+                    <span>欢迎 {username}</span>
                     <LinkButton onClick={this.logout}>退出</LinkButton>
                 </div>
                 <div className='header-bottom'>

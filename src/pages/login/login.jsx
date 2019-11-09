@@ -1,16 +1,35 @@
 import React, {Component} from 'react';
+import {Form, Icon, Input, Button, message} from 'antd';
+import {Redirect} from "react-router-dom";
+import {connect} from "react-redux";
+
 import "./login.less";
 import logo from "../../assets/images/logo.png"; // jsx中，需要这样引入图片。
-import {Form, Icon, Input, Button, message} from 'antd';
 import {reqLogin} from "../../api";
 import {withRouter} from "react-router-dom";
 import {userOptions} from "../../utils/storageUtils";
-import {Redirect} from "react-router-dom";
+import {login} from "../../redux/actions";
 
 /**
  * 登陆的路由组件，一级路由。
  */
 class Login extends Component {
+
+    /**
+     * 使用redux之后的新方法
+     */
+    handleSubmitRedux = (event) => {
+        // 阻止事件的默认行为
+        event.preventDefault();
+
+        this.props.form.validateFields(async (err, values) => {
+            if (err) return null;
+            const {username, password} = values;
+            // 调用分发异步action的函数，发登录的异步请求，有结果后更新状态。
+            this.props.login(username, password);
+        });
+    };
+
     /**
      *
      */
@@ -65,8 +84,8 @@ class Login extends Component {
                      * 使用redux之后：
                      * 1、这里如果不换成'/home'，那么标题有可能不会变成“首页”；
                      * */
-                    this.props.history.replace('/');
-                    // this.props.history.replace('/home');
+                    // this.props.history.replace('/');
+                    this.props.history.replace('/home');
                 }
 
                 // try {
@@ -99,16 +118,21 @@ class Login extends Component {
         // callback("xxx") // 有传参表示验证失败
     };
 
-    UNSAFE_componentWillMount(){
-        this.user = userOptions.getUser();
+    UNSAFE_componentWillMount() {
+        // this.user = userOptions.getUser();
     }
 
     render() {
         /**
          * 如果直接进入当前界面，检查是否登录
          */
-        let user = this.user;
-        if (user && user.data && user.data._id) return <Redirect to='/'/>;
+        const user = this.props.user;
+        let errorMsg;
+
+        if (user && user.data && user.data._id) {
+            return <Redirect to='/home'/>;
+        }
+        if (user) errorMsg = this.props.user.errorMsg || '';
 
         /**
          * getFieldDecorator 是一个高阶函数，用来包装Input
@@ -122,8 +146,9 @@ class Login extends Component {
                     <h1>React项目：后台管理系统</h1>
                 </header>
                 <section className="login-content">
+                    <div>{errorMsg}</div>
                     <h2>用户登录</h2>
-                    <Form onSubmit={this.handleSubmit} className="login-form">
+                    <Form onSubmit={this.handleSubmitRedux} className="login-form">
                         <Form.Item>
                             {
                                 /*
@@ -201,9 +226,13 @@ class Login extends Component {
  *
  * @type {ConnectedComponentClass<Login, Omit<FormComponentProps<any>, keyof WrappedFormInternalProps>>}
  */
-const WrapLogin = Form.create({name: 'my-login'})(withRouter(Login))
+const WrapLogin = Form.create()(withRouter(Login));
 
-export default WrapLogin;
+export default connect(
+    state => ({user: state.user}),
+    {login}
+)(WrapLogin);
+// export default WrapLogin;
 // export default Login;
 
 /**

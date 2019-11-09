@@ -3,34 +3,29 @@
 * */
 
 import store from "store";
-import {userKey} from "../config/index";
-import memoryUtils from "./memoryUtils";
 
-// let userInfo = memoryUtils.user;
-// const memoryUtils = {user:null}; // 这里真的很奇怪，这样写就会出错。换成import引入，就不会。
+import {userKey} from "../config/index";
+
+let memoryUser = null;
+
 export const userOptions = {
     /**
      * 获取用户名字
      * let username = getUser().data.username
      * @return {null}
      */
-    getUser() {
-        /**
-         * 为什么这里会不断的被解析?
-         */
-        // console.log('getUser()');
-        if (!memoryUtils.user) memoryUtils.user = store.get(userKey);
-        return memoryUtils.user;
+    getUser: () => {
+        // 看看store中有没有值。
+        // 这么做为了防止“第一次使用当前网页”的时候，浏览器没有local store。
+        const userStore = store.get(userKey) || null;
+        return memoryUser = memoryUser ? memoryUser : userStore;
     },
     setUser(value) {
-        // console.log('setUser()');
         store.set(userKey, value);
-        memoryUtils.user = value;
-        // debugger;
+        memoryUser = value;
     },
     removeUser() {
-        // console.log('removeUser()');
         store.remove(userKey);
-        memoryUtils.user = null;
+        memoryUser = null;
     },
 };

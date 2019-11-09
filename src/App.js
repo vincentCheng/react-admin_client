@@ -16,6 +16,7 @@ import Login from "./pages/login/login";
  *
  * 注意：
  * 1、这里的 <Route path='/login' component={Login}/> 一定要写在前面。
+ * 2、但是每一次都会先匹配 <Route path='/' component={Admin}/>，因为所有的路径都会先匹配 '/'。
  */
 class App extends Component {
     render() {

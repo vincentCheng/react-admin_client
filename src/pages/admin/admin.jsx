@@ -22,8 +22,9 @@ const {Footer, Sider, Content} = Layout;
  */
 class Admin extends Component {
     render() {
-        let user = userOptions.getUser();
+        const user = userOptions.getUser();
 
+        // 这里表示浏览器第一次登录，没有store
         if (!user) {
             return <Redirect to='/login'/>
         }
