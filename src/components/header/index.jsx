@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
 import {Modal} from "antd";
+import {connect} from "react-redux";
+
 import './index.less';
 import {formateDate} from "../../utils/dateUtils";
 import {userOptions} from "../../utils/storageUtils";
-import {menuConfig} from "../../config/menuConfig";
+// import {menuConfig} from "../../config/menuConfig";
 import {reqWeather} from "../../api";
 import {LinkButton} from "../link-button";
+// import AuthForm from "../../pages/role/auth-form";
 
 const {confirm} = Modal;
 
@@ -26,23 +29,22 @@ class Index extends Component {
     /**
      * 设置title
      */
-    getTitle = (data) => {
-        // 得到当前请求路径
-        let path = this.props.location.pathname;
-        let tempData = data || menuConfig;
-
-        tempData.forEach(item => {
-            if (item.key === path) this.title = item.title;
-            else if (item.children) this.getTitle(item.children)
-        })
-    };
+    // getTitle = (data) => {
+    //     // 得到当前请求路径
+    //     let path = this.props.location.pathname;
+    //     let tempData = data || menuConfig;
+    //
+    //     tempData.forEach(item => {
+    //         if (item.key === path) this.title = item.title;
+    //         else if (item.children) this.getTitle(item.children)
+    //     })
+    // };
 
     /**
      * 每隔一秒 获取一次当前时间
      */
     getTime = () => {
         this.time = setInterval(() => {
-            this.getTitle();
             this.setState({currentTime: formateDate(Date.now())})
         }, 1000)
     };
@@ -74,11 +76,6 @@ class Index extends Component {
         });
     };
 
-    UNSAFE_componentWillMount(){
-        let user = userOptions.getUser();
-        this.username = user.data.username;
-    }
-
     /*
     * 第一次render之后执行一次
     * 一般执行异步操作
@@ -90,7 +87,7 @@ class Index extends Component {
         // 获取当前天气
         this.getWeather();
         // 获取title
-        this.getTitle();
+        // this.getTitle();
     }
 
     componentWillUnmount() {
@@ -99,18 +96,16 @@ class Index extends Component {
 
     render() {
         const {currentTime, dayPictureUrl, weather} = this.state;
-        // let user = userOptions.getUser();
-        // console.log('header', user);
-        // const username = user.
+        const {username} = userOptions.getUser().data;
 
         return (
             <div className='header'>
                 <div className='header-top'>
-                    <span>欢迎 {this.username}</span>
+                    <span>欢迎 {username}</span>
                     <LinkButton onClick={this.logout}>退出</LinkButton>
                 </div>
                 <div className='header-bottom'>
-                    <div className="header-bottom-left">{this.title}</div>
+                    <div className="header-bottom-left">{this.props.headTitle}</div>
                     <div className="header-bottom-right">
                         <span>{currentTime}</span>
                         <img src={dayPictureUrl} alt="天气"/>
@@ -122,4 +117,10 @@ class Index extends Component {
     }
 }
 
-export default withRouter(Index);
+// Component.propTypes= {headTitle: PropTypes.string.isRequired};
+
+// export default withRouter(Index);
+export default connect(
+    state => ({headTitle: state.headTitle}), // 这里不用再声明propTypes了，只需要this.props.headTitle
+    {}
+)(withRouter(Index));

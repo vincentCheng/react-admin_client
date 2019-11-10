@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import logo from "../../assets/images/logo.png";
-import './index.less';
 import {Link, withRouter} from "react-router-dom";
 import {Menu, Icon} from 'antd';
+import {connect} from "react-redux";
+
+import logo from "../../assets/images/logo.png";
+import './index.less';
 import {menuConfig} from "../../config/menuConfig";
 import {userOptions} from "../../utils/storageUtils";
+import {setHeadTitle} from "../../redux/actions";
 
 const {SubMenu} = Menu;
 
@@ -111,9 +114,14 @@ class Index extends Component {
         return menuList.reduce((pre, item) => {
             if (!item.children) {
                 if (this.hasAuth(item)) {
+                    // 如果当前的key等于路由地址，或者路由地址中包含有当前key
+                    if (path === item.key || path.indexOf(item.key) === 0)
+                        // 更新redux中的headTitle状态.
+                        this.props.setHeadTitle(item.title);
+
                     pre.push((
                         <Menu.Item key={item.key}>
-                            <Link to={item.key}>
+                            <Link to={item.key} onClick={()=>{this.props.setHeadTitle(item.title)}}>
                                 <Icon type={item.icon}/>
                                 <span>{item.title}</span>
                             </Link>
@@ -197,4 +205,8 @@ class Index extends Component {
 * 新的组件向非路由组件传递props的三个属性。
 * history/location/match
 * */
-export default withRouter(Index);
+// export default withRouter(Index);
+export default connect(
+    state => ({}),
+    {setHeadTitle} // 这个是在 this.props.setHeadTitle 中读取。
+)(withRouter(Index));
