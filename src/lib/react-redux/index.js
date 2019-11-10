@@ -55,20 +55,55 @@ export function connect(mapStateToProps, mapDispatchToProps) {
     // 返回高阶组件函数
     return UIComponent => {
         return class ContainerComponent extends React.Component {
-            
+
             // 声明接收的context数据的名称和类型
-            static contextTypes={
+            static contextTypes = {
                 store: PropTypes.object
             };
-            
-            constructor(props, context){
+
+            constructor(props, context) {
                 super(props);
                 console.log('ContainerComponent constructor()', context.store);
+
+                // 得到store
+                const {store} = context;
+                // 得到包含所有一般属性的对象
+                const stateProps = mapStateToProps(store.getState());
+
+                // 不能这样使用，会警告：
+                //index.js:1375 Warning: Can't call setState on a component that is not yet mounted.
+                // this.setState({...stateProps});
+
+                this.state = {...stateProps};
+
+                if ('function' === typeof mapDispatchToProps) {
+                    // 得到包含所有函数属性的对象
+                    // Counter.jsx中的要使用函数 mapDispatchToProps()
+                    this.dispatchProps = mapDispatchToProps(store.dispatch);
+                } else {
+                    this.dispatchProps = Object.keys(mapDispatchToProps).reduce((pre, key) => {
+                        const actionCreator = mapDispatchToProps[key];
+
+                        // 参数透传
+                        // 形参中的 ...args 是“收集所有的参数，形成数组”
+                        // 第二个 ...args 是“展开数组，形成形参”
+                        pre[key] = (...args) => {
+                            store.dispatch(actionCreator(...args))
+                        };
+                        return pre;
+                    }, {});
+                }
+
+                // 绑定监听
+                store.subscribe(() => { // store 内部的状态数据发生了改变
+                    // 更新容器组件 ==> UI组件更新
+                    this.setState({...mapStateToProps(store.getState())});
+                });
             }
-            
+
             render() {
                 // 返回UI组件的标签
-                return <UIComponent/>
+                return <UIComponent {...this.state} {...this.dispatchProps}/>
             }
         }
     }
