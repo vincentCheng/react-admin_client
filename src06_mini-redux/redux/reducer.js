@@ -1,16 +1,19 @@
 /*
 * reducer 函数模块：根据当前state和指定的action返回一个新的state
 * */
-import {combineReducers} from "../lib/redux";
+
 import {INCREMENT, DECREMENT} from "./action-types";
+// import {combineReducers} from "redux";
+import {combineReducers} from "../lib/redux";
 
 /**
  * 管理状态：count
  */
+// export const count = (state = 1, action) => {
 const count = (state = 1, action) => {
     let result;
 
-    // console.log('count()', state, action);
+    console.log('count()', state, action);
 
     switch (action.type) {
         case INCREMENT:
@@ -26,25 +29,23 @@ const count = (state = 1, action) => {
     return result;
 };
 
-const initUser = {};
 /**
- * 管理user装填数据
- * @param state
- * @param action
+ * 管理用户信息的reducer函数
  */
-const user = (state = initUser, action) => {
-    return state;
+const user = (state = {}, action) => {
+    switch (action.type) {
+        default:
+            return state;
+    }
 };
 
 /**
- * 接收包含所有reducer函数的对象，返回一个新的reducer函数。
- * 总的reducer函数管理的state的结构
- * {
- *     count: 2,
- *     user: {}
- * }
+ * 返回一个整合后的reducer
+ * 管理总的状态
+ * 总的状态：
+ * {count:1,user:{}}
  */
-export default  combineReducers({
+ export default combineReducers ({
     count,
     user
-})
+});
