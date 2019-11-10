@@ -1,50 +1,47 @@
 /*
-* reducer 函数模块：根据当前state和指定的action返回一个新的state
+* 根据老的state和指定的action生成并且返回新的state函数
 * */
-import {combineReducers} from "../lib/redux";
-import {INCREMENT, DECREMENT} from "./action-types";
+import {combineReducers} from "redux";
+
+import {userOptions} from "../utils/storageUtils";
+import {
+    SET_HEAD_TITLE,
+    RECEIVE_USER,
+    SHOW_ERROR_MSG
+} from "./action-types";
 
 /**
- * 管理状态：count
+ * 管理头部标题的reducer函数
  */
-const count = (state = 1, action) => {
-    let result;
-
-    // console.log('count()', state, action);
-
+const initHeadTitle = '首页';
+const headTitle = (state = initHeadTitle, action) => {
     switch (action.type) {
-        case INCREMENT:
-            result = state + action.data;
-            break;
-        case DECREMENT:
-            result = state - action.data;
-            break;
+        case SET_HEAD_TITLE:
+            return action.data;
         default:
-            result = state;
-            break;
+            return state;
     }
-    return result;
 };
 
-const initUser = {};
 /**
- * 管理user装填数据
- * @param state
- * @param action
+ * 管理当前登录用户的reducer函数
  */
+// const initUser = userOptions.getUser().data.username;
+const initUser = userOptions.getUser();
 const user = (state = initUser, action) => {
-    return state;
+    switch (action.type) {
+        case RECEIVE_USER:
+            return action.user;
+        case SHOW_ERROR_MSG:
+            const errorMsg = action.errorMsg;
+            // state.errorMsg = errorMsg; // 不能这样做，不能修改原来的数据。
+            return {...state, errorMsg}; // 必须这样做
+        default:
+            return state;
+    }
 };
 
-/**
- * 接收包含所有reducer函数的对象，返回一个新的reducer函数。
- * 总的reducer函数管理的state的结构
- * {
- *     count: 2,
- *     user: {}
- * }
- */
-export default  combineReducers({
-    count,
+export default combineReducers({
+    headTitle,
     user
 })
