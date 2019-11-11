@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Card, Icon, List} from "antd";
+import {connect} from "react-redux";
+
 import {LinkButton} from "../../components/link-button";
 import {BASE_IMG_URL} from "../../config";
 import {reqCategory} from "../../api";
@@ -14,7 +16,8 @@ class ProductDetail extends Component {
     };
 
     async componentDidMount() {
-        let {pCategoryId, categoryId} = this.props.location.state;
+        // let {pCategoryId, categoryId} = this.props.location.state;
+        let {pCategoryId, categoryId} = this.props.product;
         if ('0' === pCategoryId + '') { // 一级分类下的商品，这里将id变成字符串再和'0'对比
             let result = await reqCategory(categoryId);
             // debugger;
@@ -35,10 +38,9 @@ class ProductDetail extends Component {
     }
 
     render() {
-
         // 读取携带过来的state数据
-        let {name, desc, price, imgs, detail} = this.props.location.state;
-        let {cName1, cName2} = this.state;
+        const {name, desc, price, imgs, detail} = this.props.product;
+        const {cName1, cName2} = this.state;
 
         let title = (
             <span>
@@ -85,4 +87,9 @@ class ProductDetail extends Component {
     }
 }
 
-export default ProductDetail;
+// export default ProductDetail;
+
+export default connect(
+    state => ({product: state.hashRouteParams}),
+    null
+)(ProductDetail);

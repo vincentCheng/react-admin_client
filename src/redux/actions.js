@@ -7,7 +7,8 @@
 import {
     SET_HEAD_TITLE,
     RECEIVE_USER,
-    SHOW_ERROR_MSG
+    SHOW_ERROR_MSG,
+    SET_HASH_ROUTE_PARAMS
 } from "./action-types";
 import {reqLogin} from "../api";
 import {userOptions} from "../utils/storageUtils";
@@ -50,3 +51,8 @@ export const login = (username, password) => {
         }
     };
 };
+
+/**
+ * 设置哈希路由的参数
+ */
+export const setHashRouteParams = hashRouteParams => ({type: SET_HASH_ROUTE_PARAMS, hashRouteParams});

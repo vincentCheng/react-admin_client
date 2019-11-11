@@ -7,7 +7,8 @@ import {userOptions} from "../utils/storageUtils";
 import {
     SET_HEAD_TITLE,
     RECEIVE_USER,
-    SHOW_ERROR_MSG
+    SHOW_ERROR_MSG,
+    SET_HASH_ROUTE_PARAMS
 } from "./action-types";
 
 /**
@@ -41,7 +42,21 @@ const user = (state = initUser, action) => {
     }
 };
 
+/**
+ * 哈希路由的参数
+ */
+// const initUser = userOptions.getUser();
+const hashRouteParams = (state = {}, action) => {
+    switch (action.type) {
+        case SET_HASH_ROUTE_PARAMS:
+            return action.hashRouteParams;
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
     headTitle,
-    user
+    user,
+    hashRouteParams
 })

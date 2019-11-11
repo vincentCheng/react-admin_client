@@ -12,3 +12,8 @@ export const RECEIVE_USER = 'receive_user';
  * @type {string}
  */
 export const SHOW_ERROR_MSG = 'show_error_msg';
+/**
+ * 设置哈希路由的参数
+ * @type {string}
+ */
+export const SET_HASH_ROUTE_PARAMS = 'set_hash_route_params';

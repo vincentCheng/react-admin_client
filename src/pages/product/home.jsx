@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import {Card, Select, Input, Button, Icon, Table, message} from "antd";
+import {connect} from "react-redux";
+
 import {LinkButton} from "../../components/link-button";
 import {reqProducts, reqSearchProducts, reqUpdateStatus} from "../../api";
 import {PAGE_SIZE} from "../../config";
+import {setHashRouteParams} from "../../redux/actions";
 
 const Option = Select.Option;
 
@@ -54,7 +57,8 @@ class ProductHome extends Component {
                 title: '操作',
                 render: product => (
                     <span>
-                        <LinkButton onClick={() => this.props.history.push('/product/detail', product)}>详情</LinkButton>
+                        {/*使用hash路由之后，这里不能这样传参数product，需要使用redux传递，或者使用memoryUtils。*/}
+                        <LinkButton onClick={()=>{this.showDetail(product)}}>详情</LinkButton>
                         {/*两种不同的传参方法，都试试*/}
                         <LinkButton
                             onClick={() => this.props.history.push('/product/add-update', product)}>修改</LinkButton>
@@ -105,6 +109,14 @@ class ProductHome extends Component {
         }
         message.success('更新商品成功');
         this.getProducts(this.pageNum);// 这里不知道更新第几页，定义 this.pageNum 记录当前的页数
+    };
+
+    /**
+     * 显示详情界面
+     */
+    showDetail = product => {
+        this.props.setHashRouteParams(product);
+        this.props.history.push('/product/detail')
     };
 
     UNSAFE_componentWillMount() {
@@ -160,4 +172,7 @@ class ProductHome extends Component {
     }
 }
 
-export default ProductHome;
+export default connect(
+    state => ({}),
+    {setHashRouteParams} // 这个是在 this.props.setHeadTitle 中读取。
+)(ProductHome);
